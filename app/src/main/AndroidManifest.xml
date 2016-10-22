@@ -37,10 +37,9 @@
         <activity android:name=".function.anim.imgscan_mode.AlbumActivity"/>
         <activity android:name=".function.anim.imgscan_mode.PreviewActivity"/>
         <activity android:name=".function.anim.FanActivity"/>
-        <activity android:name=".function.anim.PreviewActivity">
-        </activity>
-        <activity android:name=".function.anim.ListActivity">
-        </activity>
+        <activity android:name=".function.anim.ListViewActivity"/>
+        <activity android:name=".function.anim.GridViewActivity"/>
+        <activity android:name=".function.anim.PlatteActivity"/>
     </application>
 
 </manifest>

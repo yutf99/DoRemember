@@ -82,7 +82,7 @@
             android:textColor="@color/white"
             android:background="@drawable/button_water_blue_style"/>
         <Button
-            android:id="@+id/btn_anim_list"
+            android:id="@+id/btn_noti_s3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="listview"
@@ -90,24 +90,27 @@
             android:layout_marginTop="@dimen/defult_30_dimen"
             android:textColor="@color/white"
             android:background="@drawable/button_water_blue_style"/>
-        <Button
-            android:id="@+id/btn_noti_s4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="自定义通知View"
-            android:textSize="@dimen/defult_30_dimen"
-            android:layout_marginTop="@dimen/defult_30_dimen"
-            android:textColor="@color/white"
-            android:background="@drawable/button_water_blue_style"/>
+
         <Button
             android:id="@+id/btn_noti_s5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="下载任务"
+            android:text="gridview"
             android:textSize="@dimen/defult_30_dimen"
             android:layout_marginTop="@dimen/defult_30_dimen"
             android:textColor="@color/white"
             android:background="@drawable/button_water_blue_style"/>
+
+        <Button
+            android:id="@+id/btn_noti_s4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="platte"
+            android:textSize="@dimen/defult_30_dimen"
+            android:layout_marginTop="@dimen/defult_30_dimen"
+            android:textColor="@color/white"
+            android:background="@drawable/button_water_blue_style"/>
+
         <com.white.hot.doremember.widget.ToggleButton
             android:layout_width="54dp"
             android:layout_height="30dp"

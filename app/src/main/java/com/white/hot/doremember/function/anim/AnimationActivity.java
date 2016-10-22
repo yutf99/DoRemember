@@ -12,6 +12,7 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.github.johnpersano.supertoasts.library.Style;
 import com.github.johnpersano.supertoasts.library.SuperToast;
@@ -43,7 +44,7 @@ public class AnimationActivity extends BaseActivity {
     Button btnAnimFrame;
     @ViewInject(R.id.btn_anim_fan)
     Button btnAnimFan;
-    @ViewInject(R.id.btn_anim_list)
+    @ViewInject(R.id.btn_noti_s3)
     Button btnNotiS3;
     @ViewInject(R.id.btn_noti_s4)
     Button btnNotiS4;
@@ -60,7 +61,7 @@ public class AnimationActivity extends BaseActivity {
 
     @Event(value = {R.id.broswer, R.id.iv,
             R.id.btn_anim_property, R.id.btn_anim_tween, R.id.btn_anim_frame,
-            R.id.btn_anim_fan, R.id.btn_anim_list})
+            R.id.btn_anim_fan,R.id.btn_noti_s3, R.id.btn_noti_s4,R.id.btn_noti_s5})
     private void click(View v) {
         switch (v.getId()) {
             case R.id.broswer:
@@ -91,8 +92,14 @@ public class AnimationActivity extends BaseActivity {
             case R.id.btn_anim_fan:
                 startActivity(new Intent(this, FanActivity.class));
                 break;
-            case R.id.btn_anim_list:
-                startActivity(new Intent(this, ListActivity.class));
+            case R.id.btn_noti_s3:
+                startActivity(new Intent(this, ListViewActivity.class));
+                break;
+            case R.id.btn_noti_s4:
+                startActivity(new Intent(this, PlatteActivity.class));
+                break;
+            case R.id.btn_noti_s5:
+                startActivity(new Intent(this, GridViewActivity.class));
                 break;
         }
     }

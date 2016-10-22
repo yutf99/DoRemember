@@ -5,12 +5,16 @@
     android:id="@+id/activity_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.white.hot.doremember.function.anim.ListActivity">
+    tools:context="com.white.hot.doremember.function.anim.ListViewActivity">
 
     <ListView
         android:id="@+id/lv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/GreenGrade1"
-        android:dividerHeight="@dimen/defult_1_dimen"/>
+        android:layout_height="match_parent"/>
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="开始"/>
 </RelativeLayout>

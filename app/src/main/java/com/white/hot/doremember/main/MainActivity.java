@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             itemName.add("PDF阅读");
             itemName.add("加密解密");
             itemName.add("动画");
+            itemName.add("蓝牙");
             Bundle b = new Bundle();
             b.putStringArrayList("datas", itemName);
             frag.setArguments(b);
