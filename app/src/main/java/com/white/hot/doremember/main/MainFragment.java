@@ -69,6 +69,9 @@ public class MainFragment extends BaseFragment {
                     case 4:
                         startActivity(new Intent(mContext, AnimationActivity.class));
                         break;
+                    case 5:
+                        startActivity(new Intent(mContext, AnimationActivity.class));
+                        break;
                 }
             }
         });
