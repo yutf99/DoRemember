@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="action_bar_height">120px</dimen>
+    <dimen name="action_bar_padding">24px</dimen>
+    <dimen name="action_bar_title_size">38px</dimen>
+    <dimen name="action_bar_scanning_padding">50px</dimen>
+    <dimen name="defult_1_dimen">1px</dimen>
+    <dimen name="defult_1_dp">1dp</dimen>
+    <dimen name="defult_2_dimen">2px</dimen>
+    <dimen name="defult_2_dp">2dp</dimen>
+    <dimen name="defult_3_dimen">3px</dimen>
+    <dimen name="defult_3_dp">3dp</dimen>
+    <dimen name="defult_4_dimen">4px</dimen>
+    <dimen name="defult_4_dp">4dp</dimen>
+    <dimen name="defult_5_dimen">5px</dimen>
+    <dimen name="defult_5_dp">5dp</dimen>
+    <dimen name="defult_6_dimen">6px</dimen>
+    <dimen name="defult_6_dp">6dp</dimen>
+    <dimen name="defult_7_dimen">7px</dimen>
+    <dimen name="defult_7_dp">7dp</dimen>
+    <dimen name="defult_8_dimen">8px</dimen>
+    <dimen name="defult_8_dp">8dp</dimen>
+    <dimen name="defult_9_dimen">9px</dimen>
+    <dimen name="defult_9_dp">9dp</dimen>
+    <dimen name="defult_10_dimen">10px</dimen>
+    <dimen name="defult_10_dp">10dp</dimen>
+    <dimen name="defult_11_dimen">11px</dimen>
+    <dimen name="defult_11_dp">11dp</dimen>
+    <dimen name="defult_12_dimen">12px</dimen>
+    <dimen name="defult_12_dp">12dp</dimen>
+
+    <dimen name="defult_15_dimen">15px</dimen>
+    <dimen name="defult_15_dp">15dp</dimen>
+
+    <dimen name="defult_16_dimen">16px</dimen>
+    <dimen name="defult_16_dp">16dp</dimen>
+
+    <dimen name="defult_18_dimen">18px</dimen>
+    <dimen name="defult_18_dp">18dp</dimen>
+
+    <dimen name="defult_20_dimen">20px</dimen>
+    <dimen name="defult_20_dp">20dp</dimen>
+
+    <dimen name="defult_24_dimen">24px</dimen>
+    <dimen name="defult_24_dp">24dp</dimen>
+
+    <dimen name="defult_25_dimen">25px</dimen>
+    <dimen name="defult_25_dp">25dp</dimen>
+
+    <dimen name="defult_28_dimen">28px</dimen>
+    <dimen name="defult_28_dp">28dp</dimen>
+
+    <dimen name="defult_30_dimen">30px</dimen>
+    <dimen name="defult_30_dp">30dp</dimen>
+
+    <dimen name="defult_32_dimen">32px</dimen>
+    <dimen name="defult_32_dp">32dp</dimen>
+
+    <dimen name="defult_35_dimen">35px</dimen>
+    <dimen name="defult_35_dp">35dp</dimen>
+
+    <dimen name="defult_40_dimen">40px</dimen>
+    <dimen name="defult_40_dp">40dp</dimen>
+
+    <dimen name="defult_45_dimen">45px</dimen>
+    <dimen name="defult_45_dp">45dp</dimen>
+
+    <dimen name="defult_50_dimen">50px</dimen>
+    <dimen name="defult_50_dp">50dp</dimen>
+
+    <dimen name="defult_60_dimen">60px</dimen>
+    <dimen name="defult_60_dp">60dp</dimen>
+    <dimen name="defult_70_dimen">70px</dimen>
+    <dimen name="defult_70_dp">70dp</dimen>
+
+    <dimen name="defult_80_dimen">80px</dimen>
+    <dimen name="defult_80_dp">80dp</dimen>
+
+    <dimen name="defult_90_dimen">90px</dimen>
+    <dimen name="defult_90_dp">90dp</dimen>
+
+    <dimen name="defult_96_dimen">96px</dimen>
+    <dimen name="defult_96_dp">96dp</dimen>
+
+    <dimen name="defult_100_dimen">100px</dimen>
+    <dimen name="defult_100_dp">100dp</dimen>
+
+    <dimen name="defult_200_dimen">200px</dimen>
+    <dimen name="defult_200_dp">200dp</dimen>
+
+    <dimen name="defult_260_dimen">260px</dimen>
+    <dimen name="defult_260_dp">260dp</dimen>
+
+    <dimen name="defult_300_dimen">300px</dimen>
+    <dimen name="defult_300_dp">300dp</dimen>
+
+    <dimen name="defult_400_dimen">400px</dimen>
+    <dimen name="defult_400_dp">400dp</dimen>
+
+
+    <dimen name="defult_120_dimen">120px</dimen>
+    <dimen name="defult_135_dimen">135px</dimen>
+    <dimen name="defult_150_dimen">150px</dimen>
+    <dimen name="defult_160_dimen">160px</dimen>
+    <dimen name="defult_170_dimen">160px</dimen>
+    <dimen name="defult_180_dimen">160px</dimen>
+    <dimen name="defult_450_dimen">450px</dimen>
+
+    <dimen name="defult_145_dimen">145px</dimen>
+
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+</resources>

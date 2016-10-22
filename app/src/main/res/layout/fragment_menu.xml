@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/defult_200_dp"
+    android:background="@color/BrownGrade9"
+    android:padding="@dimen/defult_30_dimen">
+
+    <ImageView
+        android:id="@+id/iv_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/nike" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_ic"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Just do it"
+        android:textColor="@color/white"
+        android:textSize="@dimen/defult_35_dimen" />
+</RelativeLayout>

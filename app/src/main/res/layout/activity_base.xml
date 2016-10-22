@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_base_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.white.hot.doremember.widget.BaseActionBar
+        android:id="@+id/activity_base_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/defult_145_dimen"
+        android:layout_alignParentTop="true"/>
+
+    <FrameLayout
+        android:id="@+id/activity_base_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/activity_base_actionbar" />
+    <LinearLayout
+        android:id="@+id/nodata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_below="@id/activity_base_actionbar"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/nodata"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂时没有数据!"
+            android:textSize="16sp"
+            android:layout_marginTop="@dimen/defult_30_dimen"
+            android:layout_centerInParent="true"/>
+    </LinearLayout>
+</RelativeLayout>

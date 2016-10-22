@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="50px"
+    android:paddingRight="50px"
+    android:background="@drawable/dialog_bg_white_round">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv1"
+        android:layout_width="200px"
+        android:layout_height="200px"
+        android:layout_centerHorizontal="true"/>
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv2"
+        android:layout_width="200px"
+        android:layout_height="200px"
+        android:layout_below="@id/sdv1"
+        android:layout_marginTop="100px"
+        android:layout_centerHorizontal="true"/>
+    <ProgressBar
+        android:id="@+id/pb_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="@style/Base.Widget.AppCompat.ProgressBar"/>
+</RelativeLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/GreyGrade3"
+    android:orientation="vertical"
+    android:padding="@dimen/defult_30_dimen"
+    tools:context="com.white.hot.doremember.function.notification.NotificationActivity">
+
+    <Button
+        android:id="@+id/btn_noti_s1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="简 单"
+        android:textSize="@dimen/defult_30_dimen"
+        android:textColor="@color/white"
+        android:background="@drawable/button_water_blue_style"/>
+    <Button
+        android:id="@+id/btn_noti_s2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="简 单"
+        android:textSize="@dimen/defult_30_dimen"
+        android:layout_marginTop="@dimen/defult_30_dimen"
+        android:textColor="@color/white"
+        android:background="@drawable/button_water_blue_style"/>
+</LinearLayout>

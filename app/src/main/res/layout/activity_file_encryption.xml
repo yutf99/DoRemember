@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.white.hot.doremember.function.FileEncryption.FileEncryptionActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/defult_20_dimen"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_source"
+            android:text="读源文件"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_encrypt"
+            android:text="加密后"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/defult_30_dimen"/>
+        <Button
+            android:id="@+id/btn_decrypt"
+            android:text="解密后"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/defult_30_dimen"/>
+    </LinearLayout>
+    <com.white.hot.doremember.widget.JustifyTextView
+        android:id="@+id/j_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

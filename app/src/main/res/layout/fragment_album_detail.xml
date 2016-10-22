@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridView
+        android:id="@+id/gv_album"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="@dimen/defult_3_dimen"
+        android:numColumns="3"
+        android:overScrollMode="never"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/defult_3_dimen" />
+
+</RelativeLayout>

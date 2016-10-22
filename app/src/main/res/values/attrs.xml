@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BatteryIcon">
+        <attr name="batteryInnerColor" format="color"/>
+        <attr name="batteryOutColor" format="color"/>
+    </declare-styleable>
+
+    <!--ToggleButton属性-->
+    <declare-styleable name="ToggleButton">
+        <attr name="tbBorderWidth" format="dimension"/>
+        <attr name="tbOffBorderColor" format="reference|color"/>
+        <attr name="tbOffColor" format="reference|color"/>
+        <attr name="tbOnColor" format="reference|color"/>
+        <attr name="tbSpotColor" format="reference|color"/>
+        <attr name="tbAnimate" format="reference|boolean"/>
+        <attr name="tbAsDefaultOn" format="reference|boolean"/>
+    </declare-styleable>
+</resources>
