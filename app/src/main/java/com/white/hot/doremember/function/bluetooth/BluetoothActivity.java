@@ -90,6 +90,7 @@ public class BluetoothActivity extends BaseActivity
                 adapter = new Adapter();
                 lv.setAdapter(adapter);
                 bAdapter.startDiscovery();
+                bAdapter.getName();
             } else
             {
                 btn.setText("打开蓝牙");

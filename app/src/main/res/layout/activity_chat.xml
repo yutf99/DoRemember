@@ -22,19 +22,27 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/et_msg"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="4"
             android:layout_height="@dimen/defult_80_dimen"
             android:layout_margin="@dimen/defult_12_dimen"
             android:background="@drawable/blue_edit_bg"
             android:gravity="left|center_vertical"
             android:hint="输入对话"
             android:paddingLeft="@dimen/defult_20_dimen"/>
-
-        <LinearLayout
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/defult_80_dimen"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:text="发送"/>
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -71,16 +79,16 @@
                 android:layout_centerVertical="true"
                 android:layout_weight="1"
                 android:text="监听"/>
-
             <Button
                 android:id="@+id/btn_send"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/defult_80_dimen"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_weight="1"
                 android:text="发送"/>
-        </LinearLayout>
+
+        </LinearLayout>-->
     </LinearLayout>
 
     <ListView

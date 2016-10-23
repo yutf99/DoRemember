@@ -10,14 +10,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelUuid;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -25,8 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.white.hot.doremember.R;
-import com.white.hot.doremember.adapter.DefaultAdapter;
-import com.white.hot.doremember.adapter.MainFragmentFunctionAdapter;
 import com.white.hot.doremember.base.BaseActivity;
 
 import org.xutils.view.annotation.ContentView;
@@ -54,27 +50,27 @@ public class ChatActivity extends BaseActivity
     ListView lvChat;
     @ViewInject(R.id.fl_wait)
     private FrameLayout flWait;
-    @ViewInject(R.id.rb_server)
-    private RadioButton rbServer;
-    @ViewInject(R.id.rb_client)
-    private RadioButton rbClient;
-    @ViewInject(R.id.rg_choose)
-    private RadioGroup rgChoose;
-    @ViewInject(R.id.btn_listen)
-    private Button btnListen;
+//    @ViewInject(R.id.rb_server)
+//    private RadioButton rbServer;
+//    @ViewInject(R.id.rb_client)
+//    private RadioButton rbClient;
+//    @ViewInject(R.id.rg_choose)
+//    private RadioGroup rgChoose;
+//    @ViewInject(R.id.btn_listen)
+//    private Button btnListen;
 
     private boolean isListening;
-    private static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB";
+    private static UUID SERVER_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+//    private static UUID CLIENT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FC");
     private BluetoothDevice device;
-    private ParcelUuid[] uuids;
     private ChatAdapter chatAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        initActionBar();
         getIntentData();
+        initActionBar();
         config();
     }
 
@@ -83,8 +79,21 @@ public class ChatActivity extends BaseActivity
         device = getIntent().getParcelableExtra("item");
     }
 
+    private ParcelUuid[] uuids;
     private void config()
     {
+//        if(device.fetchUuidsWithSdp())
+//        {
+//            uuids = device.getUuids();
+//            if(uuids != null && uuids.length > 0)
+//            {
+//                SERVER_UUID = uuids[0].getUuid();
+//                serverWorker.start();
+//            }
+//        }
+        flWait.setVisibility(View.VISIBLE);
+        serverWorker.start();
+        clientWorker.start();
     }
 
     public static final int TYPE_OTHER = 0;
@@ -192,10 +201,7 @@ public class ChatActivity extends BaseActivity
         }
     }
 
-    public static final String PROTOCOL_SCHEME_L2CAP = "btl2cap";
     public static final String PROTOCOL_SCHEME_RFCOMM = "btspp";
-    public static final String PROTOCOL_SCHEME_BT_OBEX = "btobex";
-    public static final String PROTOCOL_SCHEME_TCP_OBEX = "tcpobex";
 
     private Handler mHandler = new Handler()
     {
@@ -222,6 +228,9 @@ public class ChatActivity extends BaseActivity
                     {
                         chatAdapter.notifyDataSetChanged();
                     }
+                    break;
+                case 2:
+                    Toast.makeText(ChatActivity.this, "对方已掉线", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -253,7 +262,7 @@ public class ChatActivity extends BaseActivity
     {
         try
         {
-            serverSocket = bluetooth.listenUsingRfcommWithServiceRecord(PROTOCOL_SCHEME_RFCOMM, UUID.fromString(MY_UUID));
+            serverSocket = bluetooth.listenUsingRfcommWithServiceRecord(PROTOCOL_SCHEME_RFCOMM, SERVER_UUID);
             mHandler.sendEmptyMessage(0);
             socket = serverSocket.accept();
             if (socket != null)
@@ -308,6 +317,7 @@ public class ChatActivity extends BaseActivity
                 try
                 {
                     is.close();
+                    mHandler.sendEmptyMessage(2);
                 } catch (IOException e1)
                 {
                     e1.printStackTrace();
@@ -318,19 +328,23 @@ public class ChatActivity extends BaseActivity
 
     private BluetoothSocket clientSocket;
     private OutputStream clientOsw;
-
+    private boolean isClientUp;
     private void connect()
     {
         try
         {
-            clientSocket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString(MY_UUID));
-
+            clientSocket = device.createInsecureRfcommSocketToServiceRecord(SERVER_UUID);
             clientSocket.connect();
+            isClientUp = true;
             mHandler.sendEmptyMessage(0);
-            sendMsg(clientSocket, device, "连接成功");
+//            sendMsg(clientSocket, device, "连接成功");
         } catch (IOException e)
         {
             e.printStackTrace();
+            if(!isClientUp)
+            {
+                connect();
+            }
         }
     }
 
@@ -362,6 +376,7 @@ public class ChatActivity extends BaseActivity
         } catch (IOException e)
         {
             e.printStackTrace();
+            mHandler.sendEmptyMessage(2);
         }
     }
 
@@ -395,7 +410,7 @@ public class ChatActivity extends BaseActivity
         }.start();
     }
 
-    @Event(value = {R.id.btn_send, R.id.btn_listen})
+    @Event(value = {R.id.btn_send})
     private void click(View v)
     {
         switch (v.getId())
@@ -410,36 +425,36 @@ public class ChatActivity extends BaseActivity
                     Toast.makeText(ChatActivity.this, "请输入内容", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.btn_listen:
-                rbServer.setChecked(true);
-                break;
+//            case R.id.btn_listen:
+//                rbServer.setChecked(true);
+//                break;
         }
     }
 
-    @Event(value = {R.id.rg_choose}, type = RadioGroup.OnCheckedChangeListener.class)
-    private void onCheckedChanged(RadioGroup group, int checkedId)
-    {
-        switch (checkedId)
-        {
-            case R.id.rb_server:
-                btnSend.setEnabled(false);
-                flWait.setVisibility(View.VISIBLE);
-                serverWorker.start();
-                break;
-            case R.id.rb_client:
-                btnSend.setEnabled(true);
-                flWait.setVisibility(View.VISIBLE);
-                clientWorker.start();
-                break;
-
-        }
-    }
+//    @Event(value = {R.id.rg_choose}, type = RadioGroup.OnCheckedChangeListener.class)
+//    private void onCheckedChanged(RadioGroup group, int checkedId)
+//    {
+//        switch (checkedId)
+//        {
+//            case R.id.rb_server:
+//                btnSend.setEnabled(false);
+//                flWait.setVisibility(View.VISIBLE);
+//                serverWorker.start();
+//                break;
+//            case R.id.rb_client:
+//                btnSend.setEnabled(true);
+//                flWait.setVisibility(View.VISIBLE);
+//                clientWorker.start();
+//                break;
+//
+//        }
+//    }
 
     private void initActionBar()
     {
         actionBar.setActionBarBackgroundColor(getResources().getColor(R.color.BlueGrade4));
         actionBar.setVisibility(View.VISIBLE);
-        actionBar.setTitleText("蓝牙", Color.WHITE);
+        actionBar.setTitleText(device.getName(), Color.WHITE);
         actionBar.showLeftBack(R.drawable.back);
     }
 }

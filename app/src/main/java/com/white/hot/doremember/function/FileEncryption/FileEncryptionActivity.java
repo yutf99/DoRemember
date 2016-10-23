@@ -31,7 +31,8 @@ import java.io.UnsupportedEncodingException;
 import butterknife.Bind;
 
 @ContentView(R.layout.activity_file_encryption)
-public class FileEncryptionActivity extends BaseActivity {
+public class FileEncryptionActivity extends BaseActivity
+{
 
     @ViewInject(R.id.btn_source)
     private Button btnSource;
@@ -43,14 +44,17 @@ public class FileEncryptionActivity extends BaseActivity {
     private JustifyTextView jTv;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         initActionBar();
     }
 
-    @Event(value={R.id.btn_source, R.id.btn_encrypt, R.id.btn_decrypt},type=View.OnClickListener.class)
-    private void onClick(View v){
-        switch (v.getId()){
+    @Event(value = {R.id.btn_source, R.id.btn_encrypt, R.id.btn_decrypt}, type = View.OnClickListener.class)
+    private void onClick(View v)
+    {
+        switch (v.getId())
+        {
             case R.id.btn_source:
                 createFile();
                 String text = readFile();
@@ -58,30 +62,39 @@ public class FileEncryptionActivity extends BaseActivity {
                 break;
             case R.id.btn_encrypt:
                 File f = new File(Environment.getExternalStorageDirectory(), "/x.txt");
-                if(!f.exists()){
+                if (!f.exists())
+                {
                     createFile();
                 }
-                try {
+                try
+                {
                     File okFile = CipherUtil.encry("12345", f);
-                    if(okFile != null && okFile.exists()){
-                        jTv.setText("加密成功！加密文件路径为："+okFile.getAbsolutePath());
-                    }else{
+                    if (okFile != null && okFile.exists())
+                    {
+                        jTv.setText("加密成功！加密文件路径为：" + okFile.getAbsolutePath());
+                    } else
+                    {
                         jTv.setText("加密失败！");
                     }
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     e.printStackTrace();
                     finish();
                 }
                 break;
             case R.id.btn_decrypt:
-                try {
+                try
+                {
                     File okFile = CipherUtil.decry(new File(Environment.getExternalStorageDirectory(), "/x.dat"), ".txt");
-                    if(okFile != null && okFile.exists()){
-                        jTv.setText("解密成功！文件内容是："+readFile());
-                    }else{
+                    if (okFile != null && okFile.exists())
+                    {
+                        jTv.setText("解密成功！文件内容是：" + readFile());
+                    } else
+                    {
                         jTv.setText("解密失败！");
                     }
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     e.printStackTrace();
                     finish();
                 }
@@ -89,79 +102,103 @@ public class FileEncryptionActivity extends BaseActivity {
         }
     }
 
-    private String readFile() {
+    private String readFile()
+    {
         File f = new File(Environment.getExternalStorageDirectory(), "/x.txt");
 
         FileInputStream fis = null;
         InputStreamReader isr = null;
         BufferedReader br = null;
-        try {
+        try
+        {
             fis = new FileInputStream(f);
             isr = new InputStreamReader(fis, "UTF-8");
             br = new BufferedReader(isr);
             StringBuffer sb = new StringBuffer();
             sb.append(br.readLine());
             return sb.toString();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e)
+        {
             e.printStackTrace();
             return null;
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e)
+        {
             e.printStackTrace();
             return null;
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
             return null;
-        } finally {
-            try {
-                if(br != null){
+        } finally
+        {
+            try
+            {
+                if (br != null)
+                {
                     br.close();
                 }
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
     }
 
-    private void createFile(){
+    private void createFile()
+    {
 
         File f = FileUtils.createFile(Environment.getExternalStorageDirectory().getAbsolutePath(), "/x.txt");
-        if(f.exists()){
-            return ;
-        }else{
-            try {
+        if (f.exists())
+        {
+            return;
+        } else
+        {
+            try
+            {
                 f.createNewFile();
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
         StringBuffer sb = new StringBuffer();
-        for(int i=0;i<200;i++){
+        for (int i = 0; i < 200; i++)
+        {
             sb.append("平常心就好！");
         }
         FileOutputStream fos = null;
         OutputStreamWriter osw = null;
-        try {
+        try
+        {
             fos = new FileOutputStream(f);
             osw = new OutputStreamWriter(fos, "UTF-8");
             osw.write(sb.toString());
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e)
+        {
             e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e)
+        {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if(osw != null){
+        } finally
+        {
+            try
+            {
+                if (osw != null)
+                {
                     osw.close();
                 }
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
     }
 
-    private void initActionBar() {
+    private void initActionBar()
+    {
         actionBar.setActionBarBackgroundColor(getResources().getColor(R.color.CyanGrade3));
         actionBar.setVisibility(View.VISIBLE);
         actionBar.setTitleText("加密解密", Color.WHITE);
