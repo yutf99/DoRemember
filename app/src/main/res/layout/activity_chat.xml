@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".function.bluetooth.ChatActivity">
+
+    <FrameLayout
+        android:id="@+id/fl_wait"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <include layout="@layout/progress_bar"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/et_msg"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/defult_80_dimen"
+            android:layout_margin="@dimen/defult_12_dimen"
+            android:background="@drawable/blue_edit_bg"
+            android:gravity="left|center_vertical"
+            android:hint="输入对话"
+            android:paddingLeft="@dimen/defult_20_dimen"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/rg_choose"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_server"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="服务端"/>
+
+                <RadioButton
+                    android:id="@+id/rb_client"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="客户端"/>
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_listen"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/defult_80_dimen"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_weight="1"
+                android:text="监听"/>
+
+            <Button
+                android:id="@+id/btn_send"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/defult_80_dimen"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_weight="1"
+                android:text="发送"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_chat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_bottom"
+        android:background="@color/GreyGrade2"
+        android:padding="@dimen/defult_24_dimen"
+        android:scrollbars="none"
+        android:divider="@null"/>
+</RelativeLayout>

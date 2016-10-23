@@ -146,6 +146,6 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setActionBarBackgroundColor(getResources().getColor(R.color.BlueGrade4));
         actionBar.setVisibility(View.VISIBLE);
         actionBar.setTitleText("功能", Color.WHITE);
-        actionBar.setLeft(R.drawable.back);
+        actionBar.showLeftBack(R.drawable.back);
     }
 }
