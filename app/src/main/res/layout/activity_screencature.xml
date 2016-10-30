@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_water_blue_style"
+            android:layout_margin="@dimen/defult_10_dimen"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="启动截屏"/>
+
+        <Button
+            android:id="@+id/stopButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@drawable/button_water_blue_style"
+            android:layout_margin="@dimen/defult_10_dimen"
+            android:layout_height="wrap_content"
+            android:text="停止"/>
+
+        <Button
+            android:id="@+id/captrue"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@drawable/button_water_blue_style"
+            android:layout_margin="@dimen/defult_10_dimen"
+            android:layout_height="wrap_content"
+            android:text="截一张"/>
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/gv_screen_snap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/defult_24_dimen"
+        android:horizontalSpacing="@dimen/defult_4_dimen"
+        android:verticalSpacing="@dimen/defult_4_dimen"
+        android:scrollbars="none"
+        android:background="@color/DeepOrangeGradeA400"
+        android:numColumns="3"/>
+
+</LinearLayout>

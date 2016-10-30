@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"/>
+
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
@@ -46,6 +47,9 @@
         <activity android:name=".function.anim.PlatteActivity"/>
         <activity android:name=".function.bluetooth.BluetoothActivity"/>
         <activity android:name=".function.bluetooth.ChatActivity"/>
+        <activity android:name=".function.snapshot.ScreenCaptureImageActivity"/>
+        <activity android:name=".function.anim.ReboundActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -18,7 +18,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.white.hot.doremember.R;
+import com.white.hot.doremember.base.BaseActivity;
 import com.white.hot.doremember.widget.BaseActionBar;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -29,8 +31,9 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-@ContentView(R.layout.activity_main)
-public class MainActivity extends AppCompatActivity {
+//@ContentView(R.layout.activity_main)
+public class MainActivity extends BaseActivity
+{
 
     @ViewInject(R.id.navigation_view)
     private NavigationView navigationView;
@@ -46,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initWindowFeature();
+//        initWindowFeature();
+        setContentView(R.layout.activity_main);
         x.view().inject(this);
         initActionBar();
         initView();
@@ -135,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
             itemName.add("加密解密");
             itemName.add("动画");
             itemName.add("蓝牙");
+            itemName.add("截屏");
             Bundle b = new Bundle();
             b.putStringArrayList("datas", itemName);
             frag.setArguments(b);
@@ -146,6 +151,5 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setActionBarBackgroundColor(getResources().getColor(R.color.BlueGrade4));
         actionBar.setVisibility(View.VISIBLE);
         actionBar.setTitleText("功能", Color.WHITE);
-        actionBar.showLeftBack(R.drawable.back);
     }
 }

@@ -19,6 +19,7 @@ import com.white.hot.doremember.function.audio.AudioPlayerActivity;
 import com.white.hot.doremember.function.bluetooth.BluetoothActivity;
 import com.white.hot.doremember.function.notification.NotificationActivity;
 import com.white.hot.doremember.function.pdf.PDFActivity;
+import com.white.hot.doremember.function.snapshot.ScreenCaptureImageActivity;
 import com.white.hot.doremember.widget.BaseActionBar;
 
 import org.xutils.view.annotation.ContentView;
@@ -73,6 +74,7 @@ public class MainFragment extends BaseFragment {
                     case 5:
                         startActivity(new Intent(mContext, BluetoothActivity.class));
                         break;
+                    case 6:startActivity(new Intent(mContext, ScreenCaptureImageActivity.class));
                 }
             }
         });

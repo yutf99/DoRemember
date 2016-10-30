@@ -8,21 +8,21 @@
     android:layout_height="match_parent"
     tools:context=".main.MainActivity">
 
-    <LinearLayout
+    <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/GreyGrade2"
         android:orientation="vertical">
-        <com.white.hot.doremember.widget.BaseActionBar
+        <!--<com.white.hot.doremember.widget.BaseActionBar
             android:id="@+id/activity_base_actionbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/defult_135_dimen" />
+            android:layout_height="@dimen/defult_135_dimen" />-->
         <android.support.v4.view.ViewPager
             android:id="@+id/vp_main"
             android:layout_marginTop="@dimen/defult_30_dimen"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </LinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"

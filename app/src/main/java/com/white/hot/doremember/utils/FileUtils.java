@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,42 +40,52 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class FileUtils {
+public class FileUtils
+{
 
     private static String basePath;
     private static boolean isOnSDCard;
 
-    static {
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-           basePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+    static
+    {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+        {
+            basePath = Environment.getExternalStorageDirectory().getAbsolutePath();
             isOnSDCard = true;
-        }else{
+        } else
+        {
             basePath = BaseApplication.getGlobalContext().getFilesDir().getAbsolutePath();
             isOnSDCard = false;
         }
     }
 
-    public static String readInStream(InputStream inStream) {
-        try {
+    public static String readInStream(InputStream inStream)
+    {
+        try
+        {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             byte[] buffer = new byte[512];
             int length = -1;
-            while ((length = inStream.read(buffer)) != -1) {
+            while ((length = inStream.read(buffer)) != -1)
+            {
                 outStream.write(buffer, 0, length);
             }
 
             outStream.close();
             inStream.close();
             return outStream.toString();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             Log.i("FileTest", e.getMessage());
         }
         return null;
     }
 
-    public static File createFile(String folderPath, String fileName) {
+    public static File createFile(String folderPath, String fileName)
+    {
         File destDir = new File(folderPath);
-        if (!destDir.exists()) {
+        if (!destDir.exists())
+        {
             destDir.mkdirs();
         }
         return new File(folderPath, File.separator + fileName);
@@ -88,41 +99,51 @@ public class FileUtils {
      * @param fileName
      * @return
      */
-    public static String writeFile(byte[] buffer, String folder, String fileName) {
+    public static String writeFile(byte[] buffer, String folder, String fileName)
+    {
         boolean writeSucc = false;
 
         boolean sdCardExist = Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED);
 
         String folderPath = "";
-        if (sdCardExist) {
+        if (sdCardExist)
+        {
             folderPath = Environment.getExternalStorageDirectory()
                     + File.separator + folder + File.separator;
-        } else {
+        } else
+        {
             writeSucc = false;
         }
 
         File fileDir = new File(folderPath);
-        if (!fileDir.exists()) {
+        if (!fileDir.exists())
+        {
             fileDir.mkdirs();
         }
         File file = new File(folderPath + fileName);
-        if (file.exists()) {
+        if (file.exists())
+        {
             file.delete();
             System.out.println("删除同名文件");
         }
         FileOutputStream out = null;
-        try {
+        try
+        {
             out = new FileOutputStream(file);
             out.write(buffer);
             writeSucc = true;
             folderPath = folderPath + fileName;
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
+        } finally
+        {
+            try
+            {
                 out.close();
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
@@ -139,29 +160,36 @@ public class FileUtils {
      * @return
      */
     public static boolean writeCacheFile(byte[] buffer, String folder,
-                                         String fileName, Context context) {
+                                         String fileName, Context context)
+    {
         boolean writeSucc = false;
 
         String folderPath = getDiskCacheDir(context) + File.separator + folder
                 + File.separator;
 
         File fileDir = new File(folderPath);
-        if (!fileDir.exists()) {
+        if (!fileDir.exists())
+        {
             fileDir.mkdirs();
         }
 
         File file = new File(folderPath + fileName);
         FileOutputStream out = null;
-        try {
+        try
+        {
             out = new FileOutputStream(file);
             out.write(buffer);
             writeSucc = true;
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
+        } finally
+        {
+            try
+            {
                 out.close();
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
@@ -175,11 +203,13 @@ public class FileUtils {
      * @param filePath
      * @return
      */
-    public static long getFileSize(String filePath) {
+    public static long getFileSize(String filePath)
+    {
         long size = 0;
 
         File file = new File(filePath);
-        if (file != null && file.exists()) {
+        if (file != null && file.exists())
+        {
             size = file.length();
         }
         return size;
@@ -191,14 +221,17 @@ public class FileUtils {
      * @param size 字节
      * @return
      */
-    public static String getFileSize(long size) {
+    public static String getFileSize(long size)
+    {
         if (size <= 0)
             return "0K";
         java.text.DecimalFormat df = new java.text.DecimalFormat("##.##");
         float temp = (float) size / 1024;
-        if (temp >= 1024) {
+        if (temp >= 1024)
+        {
             return df.format(temp / 1024) + "M";
-        } else {
+        } else
+        {
             return df.format(temp) + "K";
         }
     }
@@ -209,16 +242,21 @@ public class FileUtils {
      * @param fileS
      * @return B/KB/MB/GB
      */
-    public static String formatFileSize(long fileS) {
+    public static String formatFileSize(long fileS)
+    {
         java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
         String fileSizeString = "";
-        if (fileS < 1024) {
+        if (fileS < 1024)
+        {
             fileSizeString = df.format((double) fileS) + "B";
-        } else if (fileS < 1048576) {
+        } else if (fileS < 1048576)
+        {
             fileSizeString = df.format((double) fileS / 1024) + "KB";
-        } else if (fileS < 1073741824) {
+        } else if (fileS < 1073741824)
+        {
             fileSizeString = df.format((double) fileS / 1048576) + "MB";
-        } else {
+        } else
+        {
             fileSizeString = df.format((double) fileS / 1073741824) + "G";
         }
         return fileSizeString;
@@ -230,19 +268,25 @@ public class FileUtils {
      * @param dir
      * @return
      */
-    public static long getDirSize(File dir) {
-        if (dir == null) {
+    public static long getDirSize(File dir)
+    {
+        if (dir == null)
+        {
             return 0;
         }
-        if (!dir.isDirectory()) {
+        if (!dir.isDirectory())
+        {
             return 0;
         }
         long dirSize = 0;
         File[] files = dir.listFiles();
-        for (File file : files) {
-            if (file.isFile()) {
+        for (File file : files)
+        {
+            if (file.isFile())
+            {
                 dirSize += file.length();
-            } else if (file.isDirectory()) {
+            } else if (file.isDirectory())
+            {
                 dirSize += file.length();
                 dirSize += getDirSize(file); // 递归调用继续统计
             }
@@ -250,22 +294,28 @@ public class FileUtils {
         return dirSize;
     }
 
-    public static String getTotalCacheSize(Context context) {
+    public static String getTotalCacheSize(Context context)
+    {
         return android.text.format.Formatter.formatFileSize(context, getDirSize(context.getCacheDir()));
     }
 
-    public static String clearCache(Context context){
+    public static String clearCache(Context context)
+    {
         File dir = context.getCacheDir();
         deleteDir(dir);
         return getTotalCacheSize(context);
     }
 
-    private static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
+    private static boolean deleteDir(File dir)
+    {
+        if (dir != null && dir.isDirectory())
+        {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
+            for (int i = 0; i < children.length; i++)
+            {
                 boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
+                if (!success)
+                {
                     return false;
                 }
             }
@@ -279,12 +329,15 @@ public class FileUtils {
      * @param dir
      * @return
      */
-    public long getFileList(File dir) {
+    public long getFileList(File dir)
+    {
         long count = 0;
         File[] files = dir.listFiles();
         count = files.length;
-        for (File file : files) {
-            if (file.isDirectory()) {
+        for (File file : files)
+        {
+            if (file.isDirectory())
+            {
                 count = count + getFileList(file);// 递归
                 count--;
             }
@@ -292,10 +345,12 @@ public class FileUtils {
         return count;
     }
 
-    public static byte[] toBytes(InputStream in) throws IOException {
+    public static byte[] toBytes(InputStream in) throws IOException
+    {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int ch;
-        while ((ch = in.read()) != -1) {
+        while ((ch = in.read()) != -1)
+        {
             out.write(ch);
         }
         byte buffer[] = out.toByteArray();
@@ -309,7 +364,8 @@ public class FileUtils {
      * @param path
      * @return
      */
-    public static boolean checkFilePathExists(String path) {
+    public static boolean checkFilePathExists(String path)
+    {
         return new File(path).exists();
     }
 
@@ -318,20 +374,25 @@ public class FileUtils {
      *
      * @return 返回-1，说明没有安装sd卡
      */
-    public static long getFreeDiskSpace() {
+    public static long getFreeDiskSpace()
+    {
         String status = Environment.getExternalStorageState();
         long freeSpace = 0;
-        if (status.equals(Environment.MEDIA_MOUNTED)) {
-            try {
+        if (status.equals(Environment.MEDIA_MOUNTED))
+        {
+            try
+            {
                 File path = Environment.getExternalStorageDirectory();
                 StatFs stat = new StatFs(path.getPath());
                 long blockSize = stat.getBlockSize();
                 long availableBlocks = stat.getAvailableBlocks();
                 freeSpace = availableBlocks * blockSize / 1024;
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
-        } else {
+        } else
+        {
             return -1;
         }
         return (freeSpace);
@@ -343,28 +404,55 @@ public class FileUtils {
      * @param directoryName 可以是单个目录， 也可以带子目录 如: /dir 或者 /dir/childDir
      * @return
      */
-    public static String createDirectory(String directoryName) {
-        if (!directoryName.equals("")) {
-            if(!directoryName.startsWith("/")){
-                directoryName = "/"+directoryName;
+    public static String createDirectory(String directoryName)
+    {
+        if (!TextUtils.isEmpty(directoryName))
+        {
+            if (!directoryName.startsWith("/"))
+            {
+                directoryName = "/" + directoryName;
             }
 
             File path = null;
-            if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-                 path = Environment.getExternalStorageDirectory();
-            }else{
-                path = BaseApplication.getGlobalContext().getFilesDir();;
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+            {
+                path = Environment.getExternalStorageDirectory();
+            } else
+            {
+                path = BaseApplication.getGlobalContext().getFilesDir();
             }
             File newPath = new File(path, directoryName);
-            if(!newPath.exists()) {
-                if(newPath.mkdirs()) {
+            if (!newPath.exists())
+            {
+                if (newPath.mkdirs())
+                {
                     return newPath.getAbsolutePath();
                 }
-            }else{
+            } else
+            {
                 return newPath.getAbsolutePath();
             }
         }
         return null;
+    }
+
+    public static String createPathBasedOnApp(String newPath)
+    {
+        String appPath = getAppPath();
+        File f = new File(appPath, newPath);
+        if (!f.exists())
+        {
+            if (f.mkdir())
+            {
+                return f.getAbsolutePath();
+            } else
+            {
+                return null;
+            }
+        } else
+        {
+            return f.getAbsolutePath();
+        }
     }
 
     /**
@@ -372,10 +460,12 @@ public class FileUtils {
      *
      * @return
      */
-    public static boolean checkSaveLocationExists() {
+    public static boolean checkSaveLocationExists()
+    {
         String sDCardStatus = Environment.getExternalStorageState();
         boolean status;
-        if (sDCardStatus.equals(Environment.MEDIA_MOUNTED)) {
+        if (sDCardStatus.equals(Environment.MEDIA_MOUNTED))
+        {
             status = true;
         } else
             status = false;
@@ -387,49 +477,45 @@ public class FileUtils {
      *
      * @return
      */
-    public static boolean checkExternalSDExists() {
+    public static boolean checkExternalSDExists()
+    {
 
         Map<String, String> evn = System.getenv();
         return evn.containsKey("SECONDARY_STORAGE");
     }
 
     /**
-     * 删除目录(包括：目录里的所有文件)
+     * 删除目录必须传绝对路径
      *
-     * @param fileName
+     * @param absolutePath 绝对路径
      * @return
      */
-    public static boolean deleteDirectory(String fileName) {
-        boolean status;
-        SecurityManager checker = new SecurityManager();
-
-        if (!fileName.equals("")) {
-
-            File path = Environment.getExternalStorageDirectory();
-            File newPath = new File(path.toString() + fileName);
-            checker.checkDelete(newPath.toString());
-            if (newPath.isDirectory()) {
-                String[] listfile = newPath.list();
-                // delete all files within the specified directory and then
-                // delete the directory
-                try {
-                    for (int i = 0; i < listfile.length; i++) {
-                        File deletedFile = new File(newPath.toString() + "/"
-                                + listfile[i].toString());
-                        deletedFile.delete();
+    public static boolean deleteDirectory(String absolutePath)
+    {
+        if (!TextUtils.isEmpty(absolutePath))
+        {
+            File f = new File(absolutePath);
+            if (f != null)
+            {
+                File[] files = f.listFiles();
+                if (files != null && files.length > 0)
+                {
+                    for (File ff : files)
+                    {
+                        if (ff.isDirectory())
+                        {
+                            deleteDirectory(ff.getAbsolutePath());
+                        } else
+                        {
+                            ff.delete();
+                        }
                     }
-                    newPath.delete();
-                    status = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    status = false;
+                    f.delete();
+                    return true;
                 }
-
-            } else
-                status = false;
-        } else
-            status = false;
-        return status;
+            }
+        }
+        return false;
     }
 
     /**
@@ -438,20 +524,25 @@ public class FileUtils {
      * @param fileName
      * @return
      */
-    public static boolean deleteFile(String fileName) {
+    public static boolean deleteFile(String fileName)
+    {
         boolean status;
         SecurityManager checker = new SecurityManager();
 
-        if (!fileName.equals("")) {
+        if (!fileName.equals(""))
+        {
 
             File path = Environment.getExternalStorageDirectory();
             File newPath = new File(path.toString() + fileName);
             checker.checkDelete(newPath.toString());
-            if (newPath.isFile()) {
-                try {
+            if (newPath.isFile())
+            {
+                try
+                {
                     newPath.delete();
                     status = true;
-                } catch (SecurityException se) {
+                } catch (SecurityException se)
+                {
                     se.printStackTrace();
                     status = false;
                 }
@@ -469,7 +560,8 @@ public class FileUtils {
      * @return 图像保存后的file路径
      * @throws Exception
      */
-    public static String saveImage(Bitmap bmp) throws Exception {
+    public static String saveImage(Bitmap bmp) throws Exception
+    {
         File file = new File(buildFileName());
         file.createNewFile();
         FileOutputStream oStream = new FileOutputStream(file);
@@ -484,7 +576,8 @@ public class FileUtils {
      *
      * @return PNG图片路径
      */
-    public static String buildFileName() {
+    public static String buildFileName()
+    {
         Date now = new Date();
         SimpleDateFormat formater = new SimpleDateFormat("yyMMdd_HHmmss");
 
@@ -504,15 +597,19 @@ public class FileUtils {
      *
      * @return
      */
-    public static int deleteBlankPath(String path) {
+    public static int deleteBlankPath(String path)
+    {
         File f = new File(path);
-        if (!f.canWrite()) {
+        if (!f.canWrite())
+        {
             return 1;
         }
-        if (f.list() != null && f.list().length > 0) {
+        if (f.list() != null && f.list().length > 0)
+        {
             return 2;
         }
-        if (f.delete()) {
+        if (f.delete())
+        {
             return 0;
         }
         return 3;
@@ -525,7 +622,8 @@ public class FileUtils {
      * @param newName
      * @return
      */
-    public static boolean reNamePath(String oldName, String newName) {
+    public static boolean reNamePath(String oldName, String newName)
+    {
         File f = new File(oldName);
         return f.renameTo(new File(newName));
     }
@@ -535,11 +633,13 @@ public class FileUtils {
      *
      * @param filePath
      */
-    public static boolean deleteFileWithPath(String filePath) {
+    public static boolean deleteFileWithPath(String filePath)
+    {
         SecurityManager checker = new SecurityManager();
         File f = new File(filePath);
         checker.checkDelete(filePath);
-        if (f.isFile()) {
+        if (f.isFile())
+        {
             f.delete();
             return true;
         }
@@ -551,15 +651,20 @@ public class FileUtils {
      *
      * @param filePath
      */
-    public static void clearFileWithPath(String filePath) {
+    public static void clearFileWithPath(String filePath)
+    {
         List<File> files = FileUtils.listPathFiles(filePath);
-        if (files.isEmpty()) {
+        if (files.isEmpty())
+        {
             return;
         }
-        for (File f : files) {
-            if (f.isDirectory()) {
+        for (File f : files)
+        {
+            if (f.isDirectory())
+            {
                 clearFileWithPath(f.getAbsolutePath());
-            } else {
+            } else
+            {
                 f.delete();
             }
         }
@@ -570,7 +675,8 @@ public class FileUtils {
      *
      * @return
      */
-    public static String getSDRoot() {
+    public static String getSDRoot()
+    {
 
         return Environment.getExternalStorageDirectory().getAbsolutePath();
     }
@@ -580,7 +686,8 @@ public class FileUtils {
      *
      * @return
      */
-    public static String getExternalSDRoot() {
+    public static String getExternalSDRoot()
+    {
 
         Map<String, String> evn = System.getenv();
 
@@ -593,15 +700,19 @@ public class FileUtils {
      * @param root
      * @return 绝对路径
      */
-    public static List<String> listPath(String root) {
+    public static List<String> listPath(String root)
+    {
         List<String> allDir = new ArrayList<String>();
         SecurityManager checker = new SecurityManager();
         File path = new File(root);
         checker.checkRead(root);
         // 过滤掉以.开始的文件夹
-        if (path.isDirectory()) {
-            for (File f : path.listFiles()) {
-                if (f.isDirectory() && !f.getName().startsWith(".")) {
+        if (path.isDirectory())
+        {
+            for (File f : path.listFiles())
+            {
+                if (f.isDirectory() && !f.getName().startsWith("."))
+                {
                     allDir.add(f.getAbsolutePath());
                 }
             }
@@ -615,13 +726,15 @@ public class FileUtils {
      * @param root
      * @return
      */
-    public static List<File> listPathFiles(String root) {
+    public static List<File> listPathFiles(String root)
+    {
         List<File> allDir = new ArrayList<File>();
         SecurityManager checker = new SecurityManager();
         File path = new File(root);
         checker.checkRead(root);
         File[] files = path.listFiles();
-        for (File f : files) {
+        for (File f : files)
+        {
             if (f.isFile())
                 allDir.add(f);
             else
@@ -630,7 +743,8 @@ public class FileUtils {
         return allDir;
     }
 
-    public enum PathStatus {
+    public enum PathStatus
+    {
         SUCCESS, EXITS, ERROR
     }
 
@@ -639,14 +753,18 @@ public class FileUtils {
      *
      * @param newPath
      */
-    public static PathStatus createPath(String newPath) {
+    public static PathStatus createPath(String newPath)
+    {
         File path = new File(newPath);
-        if (path.exists()) {
+        if (path.exists())
+        {
             return PathStatus.EXITS;
         }
-        if (path.mkdir()) {
+        if (path.mkdir())
+        {
             return PathStatus.SUCCESS;
-        } else {
+        } else
+        {
             return PathStatus.ERROR;
         }
     }
@@ -656,7 +774,8 @@ public class FileUtils {
      *
      * @return
      */
-    public static String getPathName(String absolutePath) {
+    public static String getPathName(String absolutePath)
+    {
         int start = absolutePath.lastIndexOf(File.separator) + 1;
         int end = absolutePath.length();
         return absolutePath.substring(start, end);
@@ -668,13 +787,16 @@ public class FileUtils {
      * @param context
      * @return
      */
-    public static String getDiskCacheDir(Context context) {
+    public static String getDiskCacheDir(Context context)
+    {
         String cachePath = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment
                 .getExternalStorageState())
-                || !Environment.isExternalStorageRemovable()) {
+                || !Environment.isExternalStorageRemovable())
+        {
             cachePath = context.getExternalCacheDir().getPath();
-        } else {
+        } else
+        {
             cachePath = context.getCacheDir().getPath();
         }
         return cachePath;
@@ -687,11 +809,13 @@ public class FileUtils {
      * @param dir
      * @return
      */
-    public static String getAppCache(Context context, String dir) {
+    public static String getAppCache(Context context, String dir)
+    {
         String savePath = context.getCacheDir().getAbsolutePath() + "/" + dir
                 + "/";
         File savedir = new File(savePath);
-        if (!savedir.exists()) {
+        if (!savedir.exists())
+        {
             savedir.mkdirs();
         }
         savedir = null;
@@ -704,17 +828,21 @@ public class FileUtils {
      * @param size
      * @return
      */
-    public static String formatFileLength(int size) {
+    public static String formatFileLength(int size)
+    {
         long kb = 1024;
         long mb = kb * 1024;
         long gb = mb * 1024;
 
-        if (size >= gb) {
+        if (size >= gb)
+        {
             return String.format("%.1f GB", (float) size / gb);
-        } else if (size >= mb) {
+        } else if (size >= mb)
+        {
             float f = (float) size / mb;
             return String.format(f > 100 ? "%.0f MB" : "%.1f MB", f);
-        } else if (size >= kb) {
+        } else if (size >= kb)
+        {
             float f = (float) size / kb;
             return String.format(f > 100 ? "%.0f KB" : "%.1f KB", f);
         } else
@@ -726,11 +854,14 @@ public class FileUtils {
      *
      * @return
      */
-    public static boolean hasSdcard() {
+    public static boolean hasSdcard()
+    {
         String state = Environment.getExternalStorageState();
-        if (state.equals(Environment.MEDIA_MOUNTED)) {
+        if (state.equals(Environment.MEDIA_MOUNTED))
+        {
             return true;
-        } else {
+        } else
+        {
             return false;
         }
     }
@@ -741,18 +872,22 @@ public class FileUtils {
      * @param bitmap
      * @return
      */
-    public static byte[] getByteArray(Bitmap bitmap) {
+    public static byte[] getByteArray(Bitmap bitmap)
+    {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] buffe = baos.toByteArray();
         return buffe;
     }
 
-    public static Uri toUri(Context context, Uri fileUri) {
+    public static Uri toUri(Context context, Uri fileUri)
+    {
         Uri uri = null;
-        if (fileUri.getScheme().equals("file")) {
+        if (fileUri.getScheme().equals("file"))
+        {
             String path = fileUri.getEncodedPath();
-            if (path != null) {
+            if (path != null)
+            {
                 path = Uri.decode(path);
                 Log.d("TAG", "path2 is " + path);
                 ContentResolver cr = context.getContentResolver();
@@ -763,19 +898,23 @@ public class FileUtils {
                         new String[]{ImageColumns._ID},
                         buff.toString(), null, null);
                 int index = 0;
-                for (cur.moveToFirst(); !cur.isAfterLast(); cur.moveToNext()) {
+                for (cur.moveToFirst(); !cur.isAfterLast(); cur.moveToNext())
+                {
                     index = cur.getColumnIndex(ImageColumns._ID);
                     // set _id value
                     index = cur.getInt(index);
                 }
-                if (index == 0) {
+                if (index == 0)
+                {
                     // do nothing
-                } else {
+                } else
+                {
                     Uri uri_temp = Uri
                             .parse("content://media/external/images/media/"
                                     + index);
                     Log.d("TAG", "uri_temp is " + uri_temp);
-                    if (uri_temp != null) {
+                    if (uri_temp != null)
+                    {
                         uri = uri_temp;
                     }
                 }
@@ -791,22 +930,28 @@ public class FileUtils {
      * @param uri
      * @return the file path or null
      */
-    public static String getRealFilePath(final Context context, final Uri uri) {
+    public static String getRealFilePath(final Context context, final Uri uri)
+    {
         if (null == uri)
             return null;
         final String scheme = uri.getScheme();
         String data = null;
         if (scheme == null)
             data = uri.getPath();
-        else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
+        else if (ContentResolver.SCHEME_FILE.equals(scheme))
+        {
             data = uri.getPath();
-        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
+        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme))
+        {
             Cursor cursor = context.getContentResolver().query(uri,
                     new String[]{ImageColumns.DATA}, null, null, null);
-            if (null != cursor) {
-                if (cursor.moveToFirst()) {
+            if (null != cursor)
+            {
+                if (cursor.moveToFirst())
+                {
                     int index = cursor.getColumnIndex(ImageColumns.DATA);
-                    if (index > -1) {
+                    if (index > -1)
+                    {
                         data = cursor.getString(index);
                     }
                 }
@@ -822,23 +967,28 @@ public class FileUtils {
      * @param path ： 图片文件的路径
      * @return 图片文件的被旋转角度
      */
-    public static int readPicDegree(String path) {
+    public static int readPicDegree(String path)
+    {
         int degree = 0;
 
         // 读取图片文件信息的类ExifInterface
         ExifInterface exif = null;
-        try {
+        try
+        {
             exif = new ExifInterface(path);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        if (exif != null) {
+        if (exif != null)
+        {
             int orientation = exif.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_NORMAL);
-            switch (orientation) {
+            switch (orientation)
+            {
                 case ExifInterface.ORIENTATION_ROTATE_90:
                     degree = 90;
                     break;
@@ -863,7 +1013,8 @@ public class FileUtils {
      * @param bitmap ： 需纠正方向的图片
      * @return 纠向后的图片
      */
-    public static Bitmap rotateBitmap(int degree, Bitmap bitmap) {
+    public static Bitmap rotateBitmap(int degree, Bitmap bitmap)
+    {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
         Bitmap bm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
@@ -878,9 +1029,11 @@ public class FileUtils {
      * @param uri     本地图片路径
      * @return
      */
-    public static Bitmap getBitmapFactory(BaseActivity context, Uri uri) {
+    public static Bitmap getBitmapFactory(BaseActivity context, Uri uri)
+    {
         Bitmap bitmap = null;
-        try {
+        try
+        {
             InputStream is = context.getContentResolver().openInputStream(uri);
             // 1.计算出来屏幕的宽高.
             int windowWidth = UIHelper.getScreenWidth(context);
@@ -894,16 +1047,20 @@ public class FileUtils {
             int bitmapWidth = opts.outWidth;
             Log.e("bitmapHeight", bitmapHeight + "");
             Log.e("bitmapWidth", bitmapWidth + "");
-            if (bitmapHeight > windowHeight || bitmapWidth > windowWidth) {
+            if (bitmapHeight > windowHeight || bitmapWidth > windowWidth)
+            {
                 int scaleX = bitmapWidth / windowWidth;
                 int scaleY = bitmapHeight / windowHeight;
-                if (scaleX > scaleY) {// 按照水平方向的比例缩放
+                if (scaleX > scaleY)
+                {// 按照水平方向的比例缩放
                     opts.inSampleSize = scaleX;
-                } else {// 按照竖直方向的比例缩放
+                } else
+                {// 按照竖直方向的比例缩放
                     opts.inSampleSize = scaleY;
                 }
 
-            } else {// 如果图片比手机屏幕小 不去缩放了.
+            } else
+            {// 如果图片比手机屏幕小 不去缩放了.
                 opts.inSampleSize = 1;
             }
             // 让位图工厂真正的去解析图片
@@ -912,7 +1069,8 @@ public class FileUtils {
             is = context.getContentResolver().openInputStream(uri);
             bitmap = BitmapFactory.decodeStream(is, null, opts);
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return bitmap;
@@ -925,9 +1083,11 @@ public class FileUtils {
      * @param path    本地图片路径
      * @return
      */
-    public static Bitmap getBitmapFactoryForPath(BaseActivity context, String path) {
+    public static Bitmap getBitmapFactoryForPath(BaseActivity context, String path)
+    {
         Bitmap bitmap = null;
-        try {
+        try
+        {
             // 1.计算出来屏幕的宽高.
             int windowWidth = UIHelper.getScreenWidth(context);
             int windowHeight = UIHelper.getScreenHeight(context);
@@ -940,16 +1100,20 @@ public class FileUtils {
             int bitmapWidth = opts.outWidth;
 //			Log.e("bitmapHeight", bitmapHeight + "");
 //			Log.e("bitmapWidth", bitmapWidth + "");
-            if (bitmapHeight > windowHeight || bitmapWidth > windowWidth) {
+            if (bitmapHeight > windowHeight || bitmapWidth > windowWidth)
+            {
                 int scaleX = bitmapWidth / windowWidth;
                 int scaleY = bitmapHeight / windowHeight;
-                if (scaleX > scaleY) {// 按照水平方向的比例缩放
+                if (scaleX > scaleY)
+                {// 按照水平方向的比例缩放
                     opts.inSampleSize = scaleX;
-                } else {// 按照竖直方向的比例缩放
+                } else
+                {// 按照竖直方向的比例缩放
                     opts.inSampleSize = scaleY;
                 }
 
-            } else {// 如果图片比手机屏幕小 不去缩放了.
+            } else
+            {// 如果图片比手机屏幕小 不去缩放了.
                 opts.inSampleSize = 1;
             }
             // 让位图工厂真正的去解析图片
@@ -957,7 +1121,8 @@ public class FileUtils {
             // 注意: 流的操作
             bitmap = BitmapFactory.decodeFile(path, opts);
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return bitmap;
@@ -967,19 +1132,23 @@ public class FileUtils {
      * 专为Android4.4设计的从Uri获取文件绝对路径，以前的方法已不好使
      */
     @SuppressLint("NewApi")
-    public static String getPath(final Context context, final Uri uri) {
+    public static String getPath(final Context context, final Uri uri)
+    {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
         // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri))
+        {
             // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
+            if (isExternalStorageDocument(uri))
+            {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
 
-                if ("primary".equalsIgnoreCase(type)) {
+                if ("primary".equalsIgnoreCase(type))
+                {
                     return Environment.getExternalStorageDirectory() + "/"
                             + split[1];
                 }
@@ -987,7 +1156,8 @@ public class FileUtils {
                 // TODO handle non-primary volumes
             }
             // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
+            else if (isDownloadsDocument(uri))
+            {
 
                 final String id = DocumentsContract.getDocumentId(uri);
                 final Uri contentUri = ContentUris.withAppendedId(
@@ -997,17 +1167,21 @@ public class FileUtils {
                 return getDataColumn(context, contentUri, null, null);
             }
             // MediaProvider
-            else if (isMediaDocument(uri)) {
+            else if (isMediaDocument(uri))
+            {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
 
                 Uri contentUri = null;
-                if ("image".equals(type)) {
+                if ("image".equals(type))
+                {
                     contentUri = Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
+                } else if ("video".equals(type))
+                {
                     contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
+                } else if ("audio".equals(type))
+                {
                     contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
 
@@ -1019,19 +1193,24 @@ public class FileUtils {
             }
         }
         // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+        else if ("content".equalsIgnoreCase(uri.getScheme()))
+        {
             return getDataColumn(context, uri, null, null);
         }
         // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+        else if ("file".equalsIgnoreCase(uri.getScheme()))
+        {
             return uri.getPath();
         }
 
         return null;
     }
 
-    public static String getAppPath(){
-        return createDirectory("/ReadApp");
+    public static String getAppPath()
+    {
+        ApplicationInfo info = BaseApplication.getGlobalContext().getApplicationInfo();
+        String appName = BaseApplication.getGlobalContext().getPackageManager().getApplicationLabel(info).toString();
+        return createDirectory(appName);
     }
 
     /**
@@ -1045,20 +1224,24 @@ public class FileUtils {
      * @return The value of the _data column, which is typically a file path.
      */
     public static String getDataColumn(Context context, Uri uri,
-                                       String selection, String[] selectionArgs) {
+                                       String selection, String[] selectionArgs)
+    {
 
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};
 
-        try {
+        try
+        {
             cursor = context.getContentResolver().query(uri, projection,
                     selection, selectionArgs, null);
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst())
+            {
                 final int column_index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(column_index);
             }
-        } finally {
+        } finally
+        {
             if (cursor != null)
                 cursor.close();
         }
@@ -1069,7 +1252,8 @@ public class FileUtils {
      * @param uri The Uri to check.
      * @return Whether the Uri authority is ExternalStorageProvider.
      */
-    public static boolean isExternalStorageDocument(Uri uri) {
+    public static boolean isExternalStorageDocument(Uri uri)
+    {
         return "com.android.externalstorage.documents".equals(uri
                 .getAuthority());
     }
@@ -1078,7 +1262,8 @@ public class FileUtils {
      * @param uri The Uri to check.
      * @return Whether the Uri authority is DownloadsProvider.
      */
-    public static boolean isDownloadsDocument(Uri uri) {
+    public static boolean isDownloadsDocument(Uri uri)
+    {
         return "com.android.providers.downloads.documents".equals(uri
                 .getAuthority());
     }
@@ -1087,7 +1272,8 @@ public class FileUtils {
      * @param uri The Uri to check.
      * @return Whether the Uri authority is MediaProvider.
      */
-    public static boolean isMediaDocument(Uri uri) {
+    public static boolean isMediaDocument(Uri uri)
+    {
         return "com.android.providers.media.documents".equals(uri
                 .getAuthority());
     }
