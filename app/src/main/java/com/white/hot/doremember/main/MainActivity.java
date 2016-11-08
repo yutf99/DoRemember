@@ -135,7 +135,7 @@ public class MainActivity extends BaseActivity
             ArrayList<String> itemName = new ArrayList<>();
             itemName.add("通知栏");
             itemName.add("音乐播放");
-            itemName.add("PDF阅读");
+            itemName.add("网络");
             itemName.add("加密解密");
             itemName.add("动画");
             itemName.add("蓝牙");

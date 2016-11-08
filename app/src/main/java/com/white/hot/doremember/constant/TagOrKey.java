@@ -9,4 +9,8 @@ package com.white.hot.doremember.constant;
 public class TagOrKey {
 
     public static final String STORE_ON_SDCARD = "store_on_sdcard";
+
+    public static final String WX_ID = "wx206fbe8a9230c72a";
+
+    public static final String WX_SECRET = "b8dd1f0558f8ecc4720e35f719302f87";
 }

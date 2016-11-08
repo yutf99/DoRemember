@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -33,10 +34,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop" />
+
         <activity android:name=".base.BaseActivity"/>
         <activity android:name=".function.notification.NotificationActivity"/>
         <activity android:name=".function.audio.AudioPlayerActivity"/>
-        <activity android:name=".function.pdf.PDFActivity"/>
+        <activity android:name=".function.net.NetActivity"/>
         <activity android:name=".function.FileEncryption.FileEncryptionActivity"/>
         <activity android:name=".function.anim.AnimationActivity"/>
         <activity android:name=".function.anim.imgscan_mode.AlbumActivity"/>
@@ -49,6 +56,8 @@
         <activity android:name=".function.bluetooth.ChatActivity"/>
         <activity android:name=".function.snapshot.ScreenCaptureImageActivity"/>
         <activity android:name=".function.anim.ReboundActivity">
+        </activity>
+        <activity android:name=".function.audio.SoundPoolActivity">
         </activity>
     </application>
 

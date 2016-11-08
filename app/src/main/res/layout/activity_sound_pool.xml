@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_sound_pool"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/defult_50_dimen"
+    android:orientation="vertical"
+    tools:context="com.white.hot.doremember.function.audio.SoundPoolActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_drum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="drum"
+            android:textColor="@color/white"
+            android:background="@drawable/audio_sound_pool_btn"/>
+        <Button
+            android:id="@+id/btn_clap"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="clap"
+            android:background="@drawable/audio_sound_pool_btn"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/btn_bass"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="bass"
+            android:textColor="@color/white"
+            android:background="@drawable/audio_sound_pool_btn"/>
+        <Button
+            android:id="@+id/btn_hat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="hat"
+            android:textColor="@color/white"
+            android:background="@drawable/audio_sound_pool_btn"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/btn_piano1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="piano"
+            android:textColor="@color/white"
+            android:background="@drawable/audio_sound_pool_btn"/>
+        <Button
+            android:id="@+id/btn_snare"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="snare"
+            android:textColor="@color/white"
+            android:background="@drawable/audio_sound_pool_btn"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

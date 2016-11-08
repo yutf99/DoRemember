@@ -1,11 +1,8 @@
 package com.white.hot.doremember.main;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -18,9 +15,8 @@ import com.white.hot.doremember.function.anim.AnimationActivity;
 import com.white.hot.doremember.function.audio.AudioPlayerActivity;
 import com.white.hot.doremember.function.bluetooth.BluetoothActivity;
 import com.white.hot.doremember.function.notification.NotificationActivity;
-import com.white.hot.doremember.function.pdf.PDFActivity;
+import com.white.hot.doremember.function.net.NetActivity;
 import com.white.hot.doremember.function.snapshot.ScreenCaptureImageActivity;
-import com.white.hot.doremember.widget.BaseActionBar;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -63,7 +59,7 @@ public class MainFragment extends BaseFragment {
                         startActivity(new Intent(mContext, AudioPlayerActivity.class));
                         break;
                     case 2:
-                        startActivity(new Intent(mContext, PDFActivity.class));
+                        startActivity(new Intent(mContext, NetActivity.class));
                         break;
                     case 3:
                         startActivity(new Intent(mContext, FileEncryptionActivity.class));
