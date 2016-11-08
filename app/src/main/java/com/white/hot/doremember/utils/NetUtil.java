@@ -135,16 +135,16 @@ public class NetUtil
     public static final String NET_FAILED_DETAIL_MSG_KEY = "detailMessage";
     public static final String NET_OK_MSG_KEY = "Message";
     public static final String NET_OK_CONTENT_KEY = "content";
+    public static final String NET_CODE = "code";
     public static final int WHAT_NET_FAILED = 0x09;
     public static final int WHAT_NET_OK = 0x10;
-    public static final String NET_CODE = "code";
     public static final int WHAT_NET_EXCEPTION = 0x11;
 
     /***
-     * 发送一个GET请求，结果通过handler中返回，数据放在bundle中
-     * 成功返回     1.[消息(String) NET_OK_MSG_KEY(bundle中的key,后面大写都是key)] 2.[内容(String) NET_OK_CONTENT_KEY]
-     * 连接异常返回 1.[简单的消息(String) NET_FAILED_SIMPLE_MSG_KEY] 2.[详细消息(String) NET_FAILED_DETAIL_MSG_KEY]
-     * 404,505之类的错误返回 1.[错误代码(int) NET_CODE] 2.[简单信息(String) NET_FAILED_SIMPLE_MSG_KEY]
+     * <p><b>发送一个GET请求，结果通过handler返回，数据放在bundle中</b></p><br/>
+     * <b>成功返回</b>     (1).[消息(String) <b>NET_OK_MSG_KEY</b>(bundle中的key,后面大写都是key)] 2.[内容(String) <b>NET_OK_CONTENT_KEY</b>]<br/>
+     * <b>连接异常返回</b> (2).[简单的消息(String) <b>NET_FAILED_SIMPLE_MSG_KEY</b>] 2.[详细消息(String) <b>NET_FAILED_DETAIL_MSG_KEY</b>]<br/>
+     * <b>404,505之类的错误返回</b> (3).[错误代码(int) <b>NET_CODE</b>] 2.[简单信息(String) <b>NET_FAILED_SIMPLE_MSG_KEY</b>]<br/>
      *
      * @param url         链接地址
      * @param connTimeOut 超时时间
@@ -220,11 +220,10 @@ public class NetUtil
     }
 
     /***
-     * 发送一个GET请求，结果通过handler中返回，数据放在bundle中
-     * 成功返回     1.[消息(String) NET_OK_MSG_KEY(bundle中的key,后面大写都是key)] 2.[内容(String) NET_OK_CONTENT_KEY]
-     * 连接异常返回 1.[简单的消息(String) NET_FAILED_SIMPLE_MSG_KEY] 2.[详细消息(String) NET_FAILED_DETAIL_MSG_KEY]
-     * 404,505之类的错误返回 1.[错误代码(int) NET_CODE] 2.[简单信息(String) NET_FAILED_SIMPLE_MSG_KEY]
-     *
+     * <p><b>发送一个GET请求，结果通过handler返回，数据放在bundle中</b></p><br/>
+     * <b>成功</b>     (1).[消息(String) <b>NET_OK_MSG_KEY</b>(bundle中的key,后面大写都是key)] 2.[内容(String) <b>NET_OK_CONTENT_KEY</b>]<br/>
+     * <b>连接异常</b> (2).[简单的消息(String) <b>NET_FAILED_SIMPLE_MSG_KEY</b>] 2.[详细消息(String) <b>NET_FAILED_DETAIL_MSG_KEY</b>]<br/>
+     *<b>404,505之类的错误</b> (3).[错误代码(int) <b>NET_CODE</b>] 2.[简单信息(String) <b>NET_FAILED_SIMPLE_MSG_KEY</b>]<br/>
      * @param url 链接地址
      * @param handler 消息处理
      */
