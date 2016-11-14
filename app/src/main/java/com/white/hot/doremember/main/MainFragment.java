@@ -17,6 +17,7 @@ import com.white.hot.doremember.function.bluetooth.BluetoothActivity;
 import com.white.hot.doremember.function.notification.NotificationActivity;
 import com.white.hot.doremember.function.net.NetActivity;
 import com.white.hot.doremember.function.snapshot.ScreenCaptureImageActivity;
+import com.white.hot.doremember.function.wlan.WlanActivity;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -27,7 +28,8 @@ import java.util.ArrayList;
  * Created by Administrator on 2016/9/24.
  */
 @ContentView(R.layout.fragment_main)
-public class MainFragment extends BaseFragment {
+public class MainFragment extends BaseFragment
+{
 
     private MainFragmentFunctionAdapter adapter;
     private ArrayList<String> datas;
@@ -36,22 +38,28 @@ public class MainFragment extends BaseFragment {
     private GridView gvFunction;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         datas = getArguments().getStringArrayList("datas");
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
-        if(datas != null && datas.size() > 0){
+        if (datas != null && datas.size() > 0)
+        {
             adapter = new MainFragmentFunctionAdapter(mContext, datas);
             gvFunction.setAdapter(adapter);
         }
-        gvFunction.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gvFunction.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                switch (position)
+                {
                     case 0:
                         startActivity(new Intent(mContext, NotificationActivity.class));
                         break;
@@ -70,7 +78,12 @@ public class MainFragment extends BaseFragment {
                     case 5:
                         startActivity(new Intent(mContext, BluetoothActivity.class));
                         break;
-                    case 6:startActivity(new Intent(mContext, ScreenCaptureImageActivity.class));
+                    case 6:
+                        startActivity(new Intent(mContext, ScreenCaptureImageActivity.class));
+                        break;
+                    case 7:
+                        startActivity(new Intent(mContext, WlanActivity.class));
+                        break;
                 }
             }
         });

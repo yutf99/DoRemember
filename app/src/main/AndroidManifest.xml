@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
         android:name=".base.BaseApplication"
@@ -34,12 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop" />
-
+            android:launchMode="singleTop"/>
         <activity android:name=".base.BaseActivity"/>
         <activity android:name=".function.notification.NotificationActivity"/>
         <activity android:name=".function.audio.AudioPlayerActivity"/>
@@ -58,6 +57,10 @@
         <activity android:name=".function.anim.ReboundActivity">
         </activity>
         <activity android:name=".function.audio.SoundPoolActivity">
+        </activity>
+        <activity android:name=".function.sharesdk.ShareSDKActivity">
+        </activity>
+        <activity android:name=".function.wlan.WlanActivity">
         </activity>
     </application>
 

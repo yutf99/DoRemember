@@ -88,7 +88,6 @@ public class UIHelper {
         return (int) (dp * scale + 0.5f);
     }
 
-
     public static int px2dp(int px){
         float scale = getResources().getDisplayMetrics().density;
         return (int) (px / scale + 0.5f);
