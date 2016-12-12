@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+    android:background="@drawable/ds_base">
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/defult_10_dp">
+        <include layout="@layout/tip"/>
+    </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/defult_1_dimen"
+        android:background="@color/halfTransparent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btn_negative"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:background="@drawable/bs_dialog_negative"
+            android:text="取 消"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:padding="@dimen/defult_10_dp"
+            android:layout_height="match_parent"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="0.004"
+            android:layout_height="@dimen/defult_40_dp"
+            android:background="@color/halfTransparent"/>
+        <TextView
+            android:id="@+id/btn_positive"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:text="确 定"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:background="@drawable/bs_dialog_positive"
+            android:padding="@dimen/defult_10_dp"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</LinearLayout>

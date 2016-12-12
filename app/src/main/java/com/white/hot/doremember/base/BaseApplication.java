@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.white.hot.doremember.R;
+import com.white.hot.doremember.crash.CrashHandler;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
 import org.xutils.x;
@@ -41,6 +42,8 @@ public class BaseApplication extends Application {
         AutoLayoutConifg.getInstance().useDeviceSize();
         //初始化ImageLoader
         initImageLoader();
+        //初始化全局异常处理
+//        CrashHandler.getInstance().init(this);
         //初始化frasco
         Fresco.initialize(this);
     }

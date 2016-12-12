@@ -2,40 +2,44 @@ package com.white.hot.doremember.utils;
 
 import android.os.Handler;
 import android.os.Looper;
-
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
-import com.tencent.mm.sdk.platformtools.Log;
-
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
+import okio.BufferedSink;
 import okio.BufferedSource;
+import okio.ForwardingSink;
 import okio.ForwardingSource;
 import okio.Okio;
+import okio.Sink;
 import okio.Source;
 
 /**
  * Created by ytf on 2016/11/9.
- * descption:
+ * descption: 网络请求类
  */
 
 public class OkHttpManager
@@ -44,22 +48,17 @@ public class OkHttpManager
     private static OkHttpManager mInstance;
     private Handler mHandler;
     private Gson mGson;
-
+    //默认超时时间8秒
     private static int timeout = 8;
     private OkHttpClient clientDefault;
-    //    private static OkHttpClient clientCustom = new OkHttpClient.Builder().connectTimeout(timeout, TimeUnit.SECONDS).build();
     private static Request simpleGetReq;
     private static Request simplePostReq;
 
-    private static final String NET_FAILED_MSG = "连接异常！";
-    private static final String NET_FAILED_SIMPLE_MSG_KEY = "simpleMessage";
-    private static final String NET_FAILED_DETAIL_MSG_KEY = "detailMessage";
-    private static final String NET_OK_MSG_KEY = "Message";
-    private static final String NET_OK_CONTENT_KEY = "content";
-    private static final String NET_CODE = "code";
-    private static final int WHAT_NET_FAILED = 0x09;
-    private static final int WHAT_NET_OK = 0x10;
-    private static final int WHAT_NET_EXCEPTION = 0x11;
+    private static final String NET_FAILED_MSG = "未知异常！";
+    private static final String NET_FAILED_JSON_MSG = "Json 转换异常";
+    private static final String NET_FAILED_LINK_UNAVIlABLE_MSG = "无法连接";
+    private static final String NET_FAILED_TIMEOUT_MSG = "连接超时";
+    private static final String NET_FAILED_FILE_MSG = "文件不存在";
 
     private OkHttpManager()
     {
@@ -74,7 +73,7 @@ public class OkHttpManager
         mHandler = new Handler(Looper.getMainLooper());
     }
 
-    public static OkHttpManager newInstance()
+    public static OkHttpManager getInstance()
     {
         if (mInstance == null)
         {
@@ -89,11 +88,17 @@ public class OkHttpManager
         return mInstance;
     }
 
+    /***
+     * <b>发送一个get请求</b>, 回调要传入类型
+     *
+     * @param url      链接
+     * @param callback 回调函数
+     */
     public void doGet(String url, final ResultCallback callback)
     {
         if (callback == null)
         {
-            throw new RuntimeException("callback can't be null");
+            throw new RuntimeException("回调不能为空");
         }
         if (simpleGetReq == null)
         {
@@ -105,11 +110,18 @@ public class OkHttpManager
         deliveryRequest(simpleGetReq, callback);
     }
 
+    /***
+     * <b>发送一个post请求</b>, 回调要传入类型
+     *
+     * @param url      链接
+     * @param callback 回调函数
+     * @param map      参数
+     */
     public void doPost(String url, final ResultCallback callback, Map<String, String> map)
     {
         if (callback == null)
         {
-            throw new RuntimeException("callback can't be null");
+            throw new RuntimeException("回调不能为空");
         }
         if (simplePostReq == null)
         {
@@ -121,6 +133,12 @@ public class OkHttpManager
         deliveryRequest(simplePostReq, callback);
     }
 
+    /***
+     * <b>构建参数</b>
+     *
+     * @param map 参数
+     * @return
+     */
     private FormBody.Builder buildParams(Map<String, String> map)
     {
         FormBody.Builder builder = new FormBody.Builder();
@@ -137,14 +155,19 @@ public class OkHttpManager
         return builder;
     }
 
-    private void deliveryRequest(Request request, final OkHttpManager.ResultCallback callback)
+    /***
+     * <b>传递请求</b>
+     *
+     * @param request
+     * @param callback
+     */
+    private void deliveryRequest(Request request, final ResultCallback callback)
     {
         clientDefault.newCall(request).enqueue(new Callback()
         {
             @Override
             public void onFailure(Call call, final IOException e)
             {
-                cc();
                 failedResponse(e, callback);
             }
 
@@ -165,7 +188,6 @@ public class OkHttpManager
 
                 } catch (com.google.gson.JsonParseException e)//Json解析的错误
                 {
-                    cc();
                     failedResponse(e, callback);
                 } catch (IOException e)
                 {
@@ -175,12 +197,19 @@ public class OkHttpManager
         });
     }
 
+    /***
+     * <b>下载, 如果要拿到进度，需要复写callback的<b>onProgress()</b>方法</b>, 回调方法要传入类型
+     *
+     * @param url              下载链接<br/>
+     * @param fileAbsolutePath 文件绝对路径<br/>
+     * @param callback         回调<br/>
+     */
     public void download(final String url, final String fileAbsolutePath, final ResultCallback callback)
     {
         final Request request = new Request.Builder()
                 .url(url)
                 .build();
-        final ProgressListener progressListener = new ProgressListener()
+        final DownloadProgressListener progressListener = new DownloadProgressListener()
         {
             @Override
             public void update(long bytesRead, long contentLength, boolean done)
@@ -225,12 +254,11 @@ public class OkHttpManager
                         fos.write(buf, 0, len);
                     }
                     fos.flush();
-                    //如果下载文件成功，第一个参数为文件的绝对路径
                     successResponse(file, callback);
                 } catch (IOException e)
                 {
                     e.printStackTrace();
-//                    successResponse(response.request(), e, callback);
+                    failedResponse(e, callback);
                 } finally
                 {
                     try
@@ -251,17 +279,93 @@ public class OkHttpManager
         });
     }
 
-    /**
-     * 添加进度监听的ResponseBody
+    /***
+     * 文件上传
+     * @param url url
+     * @param fileAbsolutePath 文件绝对路径
+     * @param callback 回调函数
+     */
+    public void upload(final String url, final String fileAbsolutePath, final ResultCallback callback)
+    {
+        if(callback == null)
+        {
+            throw new RuntimeException("回调不能为空");
+        }
+        File file = new File(fileAbsolutePath);
+        if(!file.exists())
+        {
+            failedResponse(new FileNotFoundException(), callback);
+            return;
+        }
+        final UploadProgressListener listener = new UploadProgressListener()
+        {
+            @Override
+            public void onRequestProgress(long bytesWrite, long contentLength, boolean done)
+            {
+                onUploadProgress(bytesWrite, contentLength, done, callback);
+            }
+        };
+        String fileName = FileUtils.getFileName(fileAbsolutePath);
+        RequestBody reqBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
+
+        MultipartBody mBody = new MultipartBody.Builder("--------------------------").setType(MultipartBody.FORM)
+                .addFormDataPart("crashlog" , fileName , new ProgressRequestBody(reqBody, listener))
+                .build();
+        clientDefault = clientDefault.newBuilder().build();
+        if (simplePostReq == null)
+        {
+            simplePostReq = new Request.Builder().post(mBody).url(url).build();
+        }else
+        {
+            simplePostReq = simplePostReq.newBuilder().url(url).post(mBody).build();
+        }
+        Call call = clientDefault.newCall(simplePostReq);
+        call.enqueue(new Callback()
+        {
+            @Override
+            public void onFailure(Call call, IOException e)
+            {
+                failedResponse(e, callback);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException
+            {
+                try
+                {
+                    final String string = response.body().string();
+                    if (callback.mType == String.class)
+                    {
+                        successResponse(string, callback);
+                    } else
+                    {
+                        Object o = mGson.fromJson(string, callback.mType);
+                        successResponse(o, callback);
+                    }
+
+                } catch (com.google.gson.JsonParseException e)//Json解析的错误
+                {
+                    failedResponse(e, callback);
+                } catch (IOException e)
+                {
+                    failedResponse(e, callback);
+                }
+            }
+        });
+    }
+
+
+    /***
+     * 文件下载的响应体
      */
     private static class ProgressResponseBody extends ResponseBody
     {
 
         private final ResponseBody responseBody;
-        private final ProgressListener progressListener;
+        private final DownloadProgressListener progressListener;
         private BufferedSource bufferedSource;
 
-        public ProgressResponseBody(ResponseBody responseBody, ProgressListener progressListener)
+        public ProgressResponseBody(ResponseBody responseBody, DownloadProgressListener progressListener)
         {
             this.responseBody = responseBody;
             this.progressListener = progressListener;
@@ -307,8 +411,7 @@ public class OkHttpManager
         }
     }
 
-
-    interface ProgressListener
+    interface DownloadProgressListener
     {
         /**
          * @param bytesRead     已下载字节数
@@ -318,17 +421,104 @@ public class OkHttpManager
         void update(long bytesRead, long contentLength, boolean done);
     }
 
-    public void cc()
+    /***
+     * 文件上传的请求体
+     */
+    public  class ProgressRequestBody extends RequestBody
     {
-        StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-        for (StackTraceElement e : stacktrace)
-        {
-            String s = e.getMethodName();
-            Log.e("s", s);
+        //实际的待包装请求体
+        private final RequestBody requestBody;
+        //进度回调接口
+        private final UploadProgressListener progressListener;
+        //包装完成的BufferedSink
+        private BufferedSink bufferedSink;
+
+        /**
+         * 构造函数，赋值
+         * @param requestBody 待包装的请求体
+         * @param progressListener 回调接口
+         */
+        public ProgressRequestBody(RequestBody requestBody, UploadProgressListener progressListener) {
+            this.requestBody = requestBody;
+            this.progressListener = progressListener;
+        }
+
+        /**
+         * 重写调用实际的响应体的contentType
+         * @return MediaType
+         */
+        @Override
+        public MediaType contentType() {
+            return requestBody.contentType();
+        }
+
+        /**
+         * 重写调用实际的响应体的contentLength
+         * @return contentLength
+         * @throws IOException 异常
+         */
+        @Override
+        public long contentLength() throws IOException {
+            return requestBody.contentLength();
+        }
+
+        /**
+         * 重写进行写入
+         * @param sink BufferedSink
+         * @throws IOException 异常
+         */
+        @Override
+        public void writeTo(BufferedSink sink) throws IOException {
+            if (bufferedSink == null) {
+                //包装
+                bufferedSink = Okio.buffer(sink(sink));
+            }
+            //写入
+            requestBody.writeTo(bufferedSink);
+            //必须调用flush，否则最后一部分数据可能不会被写入
+            bufferedSink.flush();
+
+        }
+
+        /**
+         * 写入，回调进度接口
+         * @param sink Sink
+         * @return Sink
+         */
+        private Sink sink(Sink sink) {
+            return new ForwardingSink(sink) {
+                //当前写入字节数
+                long bytesWritten = 0L;
+                //总字节长度，避免多次调用contentLength()方法
+                long contentLength = 0L;
+
+                @Override
+                public void write(Buffer source, long byteCount) throws IOException {
+                    super.write(source, byteCount);
+                    if (contentLength == 0) {
+                        //获得contentLength的值，后续不再调用
+                        contentLength = contentLength();
+                    }
+                    //增加当前写入的字节数
+                    bytesWritten += byteCount;
+                    //回调
+                    progressListener.onRequestProgress(bytesWritten, contentLength, bytesWritten == contentLength);
+                }
+            };
         }
     }
 
-    private void failedResponse(final Exception e, final OkHttpManager.ResultCallback callback)
+    interface UploadProgressListener
+    {
+        /**
+         * @param bytesWrite     已上传字节数
+         * @param contentLength 总字节数
+         * @param done          是否上传完成
+         */
+        void onRequestProgress(long bytesWrite, long contentLength, boolean done);
+    }
+
+    private void failedResponse(final Exception e, final ResultCallback callback)
     {
         mHandler.post(new Runnable()
         {
@@ -339,7 +529,16 @@ public class OkHttpManager
                 {
                     if (e instanceof com.google.gson.JsonParseException)
                     {
-                        callback.onError("Jsno 转换异常", e);
+                        callback.onError(NET_FAILED_JSON_MSG, e);
+                    } else if (e instanceof ConnectException)
+                    {
+                        callback.onError(NET_FAILED_LINK_UNAVIlABLE_MSG, e);
+                    } else if (e instanceof SocketTimeoutException)
+                    {
+                        callback.onError(NET_FAILED_TIMEOUT_MSG, e);
+                    } else if (e instanceof FileNotFoundException)
+                    {
+                        callback.onError(NET_FAILED_FILE_MSG, e);
                     } else
                     {
                         callback.onError(NET_FAILED_MSG, e);
@@ -349,19 +548,31 @@ public class OkHttpManager
         });
     }
 
-    private void onDownloadProgress(final long progress, final long allLength, final boolean done, final OkHttpManager.ResultCallback callback)
+    private void onDownloadProgress(final long progress, final long allLength, final boolean done, final ResultCallback callback)
     {
         mHandler.post(new Runnable()
         {
             @Override
             public void run()
             {
-                callback.onProgress(progress, allLength, done);
+                callback.onDownloadProgress(progress, allLength, done);
             }
         });
     }
 
-    private void successResponse(final Object object, final OkHttpManager.ResultCallback callback)
+    private void onUploadProgress(final long progress, final long allLength, final boolean done, final ResultCallback callback)
+    {
+        mHandler.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                callback.onUploadProgress(progress, allLength, done);
+            }
+        });
+    }
+
+    private void successResponse(final Object object, final ResultCallback callback)
     {
         mHandler.post(new Runnable()
         {
@@ -376,7 +587,12 @@ public class OkHttpManager
         });
     }
 
-    public static abstract class ResultCallback<T>
+    /***
+     * 回调类，用于返回结果到前台
+     *
+     * @param <T> 传入一个泛型，会自动根据类型产生对象，在post中用处较多
+     */
+    public static abstract class ResultCallback<T extends Object>
     {
         Type mType;
 
@@ -390,7 +606,7 @@ public class OkHttpManager
             Type superclass = subclass.getGenericSuperclass();
             if (superclass instanceof Class)
             {
-                throw new RuntimeException("Missing type parameter.");
+                throw new RuntimeException("ResultCallback泛型缺少对象类型");
             }
             ParameterizedType parameterized = (ParameterizedType) superclass;
             return $Gson$Types.canonicalize(parameterized.getActualTypeArguments()[0]);
@@ -398,7 +614,9 @@ public class OkHttpManager
 
         public abstract void onError(String simpleMsg, Exception e);
 
-        public void onProgress(long progress, long allLength, boolean done){}
+        public void onDownloadProgress(long progress, long allLength, boolean done){}
+
+        public void onUploadProgress(long progress, long allLength, boolean done){}
 
         public abstract void onSuccess(T response);
     }

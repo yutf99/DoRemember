@@ -22,6 +22,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.white.hot.doremember.R;
+import com.white.hot.doremember.utils.AppManager;
 import com.white.hot.doremember.widget.BaseActionBar;
 import com.zhy.autolayout.AutoLayoutActivity;
 import com.zhy.autolayout.utils.AutoUtils;
@@ -74,6 +75,8 @@ public class BaseActivity extends AutoLayoutActivity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_base);
         x.view().inject(this);
+
+        AppManager.getInstance().put(this);
 
         container = (RelativeLayout) findViewById(R.id.activity_base_container);
         actionBar = (BaseActionBar) findViewById(R.id.activity_base_actionbar);

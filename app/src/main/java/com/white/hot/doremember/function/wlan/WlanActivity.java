@@ -85,12 +85,8 @@ public class WlanActivity extends BaseActivity
                         ipSegament = ip.substring(0, ip.lastIndexOf("."));
                         for (int i = 0; i < 256; i++)
                         {
-                            if (i != 1)
-                            {
-                                String wlanIp = ipSegament + "." + i;
-                                Inet4Address i4 =Inet4Address;
-                                runPingIPprocess(wlanIp);
-                            }
+                            String wlanIp = ipSegament + "." + i;
+                            runPingIPprocess(wlanIp);
                         }
                     }
                 }.start();

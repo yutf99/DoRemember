@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/DialogBtnPress"/>
+            <corners android:bottomLeftRadius="@dimen/defult_10_dp"
+                     android:bottomRightRadius="0dp"
+                     android:topLeftRadius="0dp"
+                     android:topRightRadius="0dp"/>
+        </shape>
+    </item>
+    <item >
+        <shape android:shape="rectangle">
+            <solid android:color="@color/halfWhite"/>
+            <corners android:bottomLeftRadius="@dimen/defult_10_dp"
+                     android:bottomRightRadius="0dp"
+                     android:topLeftRadius="0dp"
+                     android:topRightRadius="0dp"/>
+        </shape>
+    </item>
+</selector>
