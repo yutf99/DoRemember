@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-import com.github.johnpersano.supertoasts.library.SuperToast;
 import com.white.hot.doremember.R;
 import com.white.hot.doremember.base.BaseActivity;
 
@@ -42,7 +42,7 @@ public class NotificationActivity extends BaseActivity {
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_noti_s1:
-                new SuperToast(this).setText("简单通知").show();
+                Toast.makeText(this, "简单通知", Toast.LENGTH_SHORT).show();
                 simpleNoti();
                 break;
         }

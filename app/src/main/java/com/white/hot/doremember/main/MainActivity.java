@@ -141,6 +141,7 @@ public class MainActivity extends BaseActivity
             itemName.add("蓝牙");
             itemName.add("截屏");
             itemName.add("局域网");
+            itemName.add("爆炸");
             Bundle b = new Bundle();
             b.putStringArrayList("datas", itemName);
             frag.setArguments(b);

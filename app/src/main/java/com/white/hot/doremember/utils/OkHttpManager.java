@@ -13,10 +13,20 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -283,9 +293,10 @@ public class OkHttpManager
      * 文件上传
      * @param url url
      * @param fileAbsolutePath 文件绝对路径
+     * @param fileParamName 文件上传的参数名,相当于post的param
      * @param callback 回调函数
      */
-    public void upload(final String url, final String fileAbsolutePath, final ResultCallback callback)
+    public void upload(final String url, final String fileAbsolutePath, final String fileParamName, final ResultCallback callback)
     {
         if(callback == null)
         {
@@ -309,7 +320,7 @@ public class OkHttpManager
         RequestBody reqBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
 
         MultipartBody mBody = new MultipartBody.Builder("--------------------------").setType(MultipartBody.FORM)
-                .addFormDataPart("crashlog" , fileName , new ProgressRequestBody(reqBody, listener))
+                .addFormDataPart(fileParamName , fileName , new ProgressRequestBody(reqBody, listener))
                 .build();
         clientDefault = clientDefault.newBuilder().build();
         if (simplePostReq == null)
@@ -621,4 +632,43 @@ public class OkHttpManager
         public abstract void onSuccess(T response);
     }
 
+    /***
+     * 此方法用于设置https访问时证书，仅用于单项验证，inputstream为证书文件的输入流，可以将证书放到assets目录下
+     * @param certificates
+     */
+    public void setCertificates(InputStream... certificates)
+    {
+        try
+        {
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null);
+            int index = 0;
+            for (InputStream certificate : certificates)
+            {
+                String certificateAlias = Integer.toString(index++);
+                keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
+
+                try
+                {
+                    if (certificate != null)
+                        certificate.close();
+                } catch (IOException e)
+                {
+                }
+            }
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+
+            TrustManagerFactory trustManagerFactory =
+                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+
+            trustManagerFactory.init(keyStore);
+            sslContext.init(null,trustManagerFactory.getTrustManagers(),new SecureRandom());
+            clientDefault.newBuilder().sslSocketFactory(sslContext.getSocketFactory());
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

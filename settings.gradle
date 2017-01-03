@@ -1,1 +1,1 @@
-include ':app', ':toastlibrary'
+include ':app', ':blur'

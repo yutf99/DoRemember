@@ -60,13 +60,19 @@ public class SoundPoolActivity extends BaseActivity
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
+        /* 5.0创建方法
         SoundPool.Builder builder = new SoundPool.Builder();
         builder.setMaxStreams(6);
         //AudioAttributes是一个封装音频各种属性的方法
         AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
-        attrBuilder.setLegacyStreamType(AudioManager.STREAM_MUSIC);//设置音频流的合适的属性
-        builder.setAudioAttributes(attrBuilder.build());//加载一个AudioAttributes
-        soundPool = builder.build();
+        attrBuilder.setLegacyStreamType(AudioManager.STREAM_MUSIC);
+        //设置音频流的合适的属性
+        builder.setAudioAttributes(attrBuilder.build());
+        //加载一个AudioAttributes
+        soundPool = builder.build();*/
+
+        //兼容方式创建
+        soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC, 5);
 
         soundMap.put(1, soundPool.load(this, R.raw.drum, 1));
         soundMap.put(2, soundPool.load(this, R.raw.clap, 1));

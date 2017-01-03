@@ -17,12 +17,9 @@
             android:scaleType="fitXY"
             android:src="@drawable/wow"/>
         <TextView
-            android:id="@+id/tv_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="美女"
-            android:textSize="20sp"
-            android:padding="20sp"
+            android:id="@+id/dg"
+            android:layout_width="@dimen/defult_300_dimen"
+            android:layout_height="@dimen/defult_300_dimen"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 
@@ -74,9 +71,4 @@
             android:text="声音池"
             android:textColor="@color/white"/>
     </LinearLayout>
-    <SeekBar
-        android:id="@+id/blur_level"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"/>
 </RelativeLayout>

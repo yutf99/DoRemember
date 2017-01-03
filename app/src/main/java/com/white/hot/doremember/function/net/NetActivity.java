@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,7 +58,7 @@ public class NetActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
         initActionBar();
-        manager = OkHttpManager.newInstance();
+        manager = OkHttpManager.getInstance();
         pb.setMax(100);
     }
 
@@ -68,6 +69,10 @@ public class NetActivity extends BaseActivity
         {
             case R.id.btn_net:
                 String url = etNet.getText().toString();
+                if(TextUtils.isEmpty(url))
+                {
+                    Toast.makeText(this, "链接为空", Toast.LENGTH_SHORT).show();
+                }
                 manager.doGet(url, new OkHttpManager.ResultCallback<String>()
                 {
                     @Override
@@ -100,7 +105,7 @@ public class NetActivity extends BaseActivity
                             }
 
                             @Override
-                            public void onProgress(long progress, long allLength, boolean done)
+                            public void onDownloadProgress(long progress, long allLength, boolean done)
                             {
                                 int p = (int) (progress * 100f / allLength);
                                 pb.setProgress(p);

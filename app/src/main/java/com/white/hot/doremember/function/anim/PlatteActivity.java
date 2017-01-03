@@ -9,13 +9,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.white.hot.doremember.R;
 import com.white.hot.doremember.base.BaseActivity;
+
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ContentView(R.layout.activity_platte)
 public class PlatteActivity extends BaseActivity
@@ -31,9 +36,9 @@ public class PlatteActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-    }
+  }
 
-    @Event(value={R.id.btn})
+    @Event(value = {R.id.btn})
     private void click(View v)
     {
         switch (v.getId())

@@ -8,18 +8,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.white.hot.doremember.R;
 import com.white.hot.doremember.base.BaseActivity;
-
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-import butterknife.Bind;
-import jp.wasabeef.blurry.Blurry;
 
 @ContentView(R.layout.activity_audio_player)
 public class AudioPlayerActivity extends BaseActivity {
@@ -36,10 +31,8 @@ public class AudioPlayerActivity extends BaseActivity {
     LinearLayout btns;
     @ViewInject(R.id.img)
     ImageView img;
-    @ViewInject(R.id.tv_center)
-    private TextView tvCenter;
-    @ViewInject(R.id.blur_level)
-    private SeekBar blurLevel;
+    @ViewInject(R.id.dg)
+    private TextView dg;
 
     @ViewInject(R.id.blur_layout)
     private RelativeLayout blurLayout;
@@ -48,26 +41,6 @@ public class AudioPlayerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initActionBar();
-        blurLevel.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
-
-            }
-        });
     }
 
     @Event(value={R.id.btn1,R.id.btn2,R.id.btn3,R.id.btn4})
@@ -77,16 +50,9 @@ public class AudioPlayerActivity extends BaseActivity {
                 showProgress();
                 break;
             case R.id.btn2:
-                Blurry.with(this)
-                        .radius(100)
-                        .sampling(8)
-//                        .color(Color.argb(66, 255, 255, 0))
-                        .async()
-                        .animate(500)
-                        .onto(blurLayout);
+
                 break;
             case R.id.btn3:
-                Blurry.with(this).capture(tvCenter).into(img);
                 break;
             case R.id.btn4:
                 startActivity(new Intent(AudioPlayerActivity.this, SoundPoolActivity.class));

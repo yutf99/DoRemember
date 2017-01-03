@@ -177,7 +177,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
             FileOutputStream fos = new FileOutputStream(path + fileName);
             fos.write(sb.toString().getBytes());
             fos.close();
-            OkHttpManager.getInstance().upload("http://192.168.1.100:8080/MavenDemo/upload/uploadLog", path + fileName,
+            OkHttpManager.getInstance().upload("http://192.168.1.100:8080/MavenDemo/upload/uploadLog", path + fileName, "crashlog",
                     new OkHttpManager.ResultCallback<BaseResp<CrashLog>>()
             {
                 @Override

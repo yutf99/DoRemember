@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DoRemember.iml" filepath="$PROJECT_DIR$/DoRemember.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/toastlibrary/toastlibrary.iml" filepath="$PROJECT_DIR$/toastlibrary/toastlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/blur/blur.iml" filepath="$PROJECT_DIR$/blur/blur.iml" />
     </modules>
   </component>
 </project>

@@ -13,9 +13,8 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.github.johnpersano.supertoasts.library.Style;
-import com.github.johnpersano.supertoasts.library.SuperToast;
 import com.white.hot.doremember.R;
 import com.white.hot.doremember.base.BaseActivity;
 import com.white.hot.doremember.constant.ActivityCode;
@@ -68,11 +67,7 @@ public class AnimationActivity extends BaseActivity {
                 startActivityForResult(new Intent(this, AlbumActivity.class), ActivityCode.REQ_ANIM_IMG_CHOOSE);
                 break;
             case R.id.iv:
-                new SuperToast(this)
-                        .setFrame(Style.FRAME_KITKAT)
-                        .setAnimations(Style.ANIMATIONS_POP)
-                        .setText("点击图片")
-                        .show();
+                Toast.makeText(this, "点击图片", Toast.LENGTH_SHORT).show();;
                 break;
             case R.id.btn_anim_property:
                 isPropertyAnimActive = !isPropertyAnimActive;
