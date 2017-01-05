@@ -9,20 +9,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-
 import com.white.hot.doremember.R;
 import com.white.hot.doremember.function.anim.imgscan_mode.album.entity.ImageInfo;
 import com.white.hot.doremember.utils.UIHelper;
 import com.zhy.autolayout.utils.AutoUtils;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by ${ytf} on 2016/10/16.
@@ -38,7 +32,6 @@ public class PreviewDialog extends Dialog
     private Adapter adapter;
     private ViewPager pager;
     private int currentPosition;
-    private PhotoViewAttacher mAttacher;
 
     public PreviewDialog(Context context, List<ImageInfo> list, int position)
     {
@@ -63,7 +56,6 @@ public class PreviewDialog extends Dialog
             {
                 ImageView iv = new ImageView(activity);
                 iv.setLayoutParams(params);
-                mAttacher = new PhotoViewAttacher();
                 views.add(iv);
             }
         }

@@ -1,4 +1,4 @@
-package com.white.hot.blur;
+package com.white.hot.doremember.utils;
 
 import android.os.Handler;
 import android.os.Looper;

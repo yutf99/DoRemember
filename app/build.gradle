@@ -43,7 +43,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile files('libs/tm-extractors-0.4.jar')
     compile files('libs/gson-2.2.4.jar')
     //compile project(':toastlibrary')
     compile 'com.zhy:autolayout:1.4.3'
@@ -64,5 +63,5 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile project(':blur')
-    compile project(':photoview')
+    compile files('libs/core.jar')
 }
