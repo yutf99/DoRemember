@@ -1,9 +1,13 @@
-package com.white.hot.doremember.utils;
+package com.white.hot.blur;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
+import com.google.gson.internal.ObjectConstructor;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,15 +19,17 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.security.KeyStore;
 import java.security.SecureRandom;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
@@ -38,6 +44,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.internal.framed.Header;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -104,7 +111,7 @@ public class OkHttpManager
      * @param url      链接
      * @param callback 回调函数
      */
-    public void doGet(String url, final ResultCallback callback)
+    public void doGet(String url, final ResultCallback<? extends Object> callback)
     {
         if (callback == null)
         {
@@ -123,11 +130,12 @@ public class OkHttpManager
     /***
      * <b>发送一个post请求</b>, 回调要传入类型
      *
-     * @param url      链接
-     * @param callback 回调函数
-     * @param map      参数
+     * @param url            链接
+     * @param callback       回调函数
+     * @param reqBodyParam  请求体参数
+     * @param reqHeader     请求头参数
      */
-    public void doPost(String url, final ResultCallback callback, Map<String, String> map)
+    public void doPost(String url, final ResultCallback<? extends Object> callback, Map<String, String> reqBodyParam, Map<String, String> reqHeader)
     {
         if (callback == null)
         {
@@ -135,13 +143,48 @@ public class OkHttpManager
         }
         if (simplePostReq == null)
         {
-            simplePostReq = new Request.Builder().post(buildParams(map).build()).url(url).build();
+            if(reqHeader == null)
+            {
+                simplePostReq = new Request.Builder().post(reqBodyParam == null ? buildEmptyBody() :buildParams(reqBodyParam).build()).url(url).build();
+            }else
+            {
+                //构造请求头
+                Request.Builder builder = new Request.Builder();
+                Set<String> set = reqHeader.keySet();
+                for(Iterator<String> it = set.iterator();it.hasNext();)
+                {
+                    String key = it.next();
+                    String value = reqHeader.get(key);
+                    builder.addHeader(key, value);
+                }
+                simplePostReq = builder.post(reqBodyParam == null ? buildEmptyBody() :buildParams(reqBodyParam).build()).url(url).build();
+            }
         } else
         {
-            simplePostReq = simplePostReq.newBuilder().post(buildParams(map).build()).url(url).build();
+            if(reqHeader == null)
+            {
+                simplePostReq = simplePostReq.newBuilder().post(reqBodyParam == null ? buildEmptyBody() :buildParams(reqBodyParam).build()).url(url).build();
+            }else
+            {
+                //构造请求头
+                Request.Builder builder = simplePostReq.newBuilder();
+                Set<String> set = reqHeader.keySet();
+                for(Iterator<String> it = set.iterator();it.hasNext();)
+                {
+                    String key = it.next();
+                    String value = reqHeader.get(key);
+                    builder.addHeader(key, value);
+                }
+                simplePostReq = builder.post(reqBodyParam == null ? buildEmptyBody() :buildParams(reqBodyParam).build()).url(url).build();
+            }
         }
         deliveryRequest(simplePostReq, callback);
     }
+
+//    public void doPost(String url, final ResultCallback<? extends Object> callback, Object obj)
+//    {
+//        Map<String, String> param = new HashMap<>();
+//    }
 
     /***
      * <b>构建参数</b>
@@ -163,6 +206,11 @@ public class OkHttpManager
             }
         }
         return builder;
+    }
+
+    private RequestBody buildEmptyBody()
+    {
+        return RequestBody.create(null, new byte[0]);
     }
 
     /***
@@ -316,7 +364,7 @@ public class OkHttpManager
                 onUploadProgress(bytesWrite, contentLength, done, callback);
             }
         };
-        String fileName = FileUtils.getFileName(fileAbsolutePath);
+        String fileName = getFileName(fileAbsolutePath);
         RequestBody reqBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
 
         MultipartBody mBody = new MultipartBody.Builder("--------------------------").setType(MultipartBody.FORM)
@@ -365,6 +413,12 @@ public class OkHttpManager
         });
     }
 
+    public String getFileName(String filePath)
+    {
+        if (TextUtils.isEmpty(filePath))
+            return "";
+        return filePath.substring(filePath.lastIndexOf(File.separator) + 1);
+    }
 
     /***
      * 文件下载的响应体
@@ -633,10 +687,11 @@ public class OkHttpManager
     }
 
     /***
-     * 此方法用于设置https访问时证书，仅用于单项验证，inputstream为证书文件的输入流，可以将证书放到assets目录下
-     * @param certificates
+     * 此方法用于设置https访问时证书，仅用于单向验证，inputstream为证书文件的输入流，可以将证书放到main/assets目录下,也可以
+     * 服务端证书crt文件使用rfc命令得到字符串用 new Buffer().writeUtf(str).inputStream()得到输入流，需要包含-----BEGIN CERTIFICATE-----和-----END CERTIFICATE-----
+     * @param certificate
      */
-    public void setCertificates(InputStream... certificates)
+    public void setCertificate(String alias, String password, InputStream certificate)
     {
         try
         {
@@ -644,28 +699,39 @@ public class OkHttpManager
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
             keyStore.load(null);
             int index = 0;
-            for (InputStream certificate : certificates)
-            {
-                String certificateAlias = Integer.toString(index++);
-                keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
+//            for (InputStream certificate : certificates)
+//            {
+//                String certificateAlias = Integer.toString(index++);
+            keyStore.setCertificateEntry(alias, certificateFactory.generateCertificate(certificate));
 
-                try
-                {
-                    if (certificate != null)
-                        certificate.close();
-                } catch (IOException e)
-                {
-                }
+            try
+            {
+                if (certificate != null)
+                    certificate.close();
+            } catch (IOException e)
+            {
             }
+//            }
 
             SSLContext sslContext = SSLContext.getInstance("TLS");
+
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(
+                    KeyManagerFactory.getDefaultAlgorithm());
+            keyManagerFactory.init(keyStore, password.toCharArray());
 
             TrustManagerFactory trustManagerFactory =
                     TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
             trustManagerFactory.init(keyStore);
-            sslContext.init(null,trustManagerFactory.getTrustManagers(),new SecureRandom());
-            clientDefault.newBuilder().sslSocketFactory(sslContext.getSocketFactory());
+            TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+            if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+                throw new IllegalStateException("Unexpected default trust managers:"
+                        + Arrays.toString(trustManagers));
+            }else
+            {
+                sslContext.init(null,new TrustManager[]{trustManagers[0]},new SecureRandom());
+                clientDefault = clientDefault.newBuilder().sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustManagers[0]).build();
+            }
         } catch (Exception e)
         {
             e.printStackTrace();

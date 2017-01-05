@@ -14,6 +14,7 @@ import com.white.hot.doremember.function.FileEncryption.FileEncryptionActivity;
 import com.white.hot.doremember.function.anim.AnimationActivity;
 import com.white.hot.doremember.function.audio.AudioPlayerActivity;
 import com.white.hot.doremember.function.bluetooth.BluetoothActivity;
+import com.white.hot.doremember.function.chart.ChartActivity;
 import com.white.hot.doremember.function.explosion.ExplosionActivity;
 import com.white.hot.doremember.function.notification.NotificationActivity;
 import com.white.hot.doremember.function.net.NetActivity;
@@ -87,6 +88,8 @@ public class MainFragment extends BaseFragment
                         break;
                     case 8:
                         startActivity(new Intent(mContext, ExplosionActivity.class));
+                    case 9:
+                        startActivity(new Intent(mContext, ChartActivity.class));
                         break;
                 }
             }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.white.hot.doremember.R;
 import com.white.hot.doremember.function.anim.imgscan_mode.album.entity.ImageInfo;
@@ -20,6 +21,8 @@ import com.zhy.autolayout.utils.AutoUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by ${ytf} on 2016/10/16.
@@ -31,10 +34,11 @@ public class PreviewDialog extends Dialog
 
     private Activity activity;
     private List<ImageInfo> imgs;
-    private List<ZoomImageView> views = new ArrayList<>();
+    private List<ImageView> views = new ArrayList<>();
     private Adapter adapter;
     private ViewPager pager;
     private int currentPosition;
+    private PhotoViewAttacher mAttacher;
 
     public PreviewDialog(Context context, List<ImageInfo> list, int position)
     {
@@ -57,8 +61,9 @@ public class PreviewDialog extends Dialog
             params.height = ViewPager.LayoutParams.WRAP_CONTENT;
             for(int i=0;i < imgs.size(); i++)
             {
-                ZoomImageView iv = new ZoomImageView(activity);
+                ImageView iv = new ImageView(activity);
                 iv.setLayoutParams(params);
+                mAttacher = new PhotoViewAttacher();
                 views.add(iv);
             }
         }
@@ -97,7 +102,7 @@ public class PreviewDialog extends Dialog
         @Override
         public Object instantiateItem(ViewGroup container, int position)
         {
-            ZoomImageView ziv = views.get(position);
+            ImageView ziv = views.get(position);
             container.addView(ziv);
             UIHelper.showImg(ziv, "file://" + imgs.get(position).getImageFile().getAbsolutePath());
             return ziv;

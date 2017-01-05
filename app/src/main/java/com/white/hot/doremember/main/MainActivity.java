@@ -32,7 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 //@ContentView(R.layout.activity_main)
-public class MainActivity extends BaseActivity
+public class MainActivity extends AppCompatActivity
 {
 
     @ViewInject(R.id.navigation_view)
@@ -52,7 +52,6 @@ public class MainActivity extends BaseActivity
 //        initWindowFeature();
         setContentView(R.layout.activity_main);
         x.view().inject(this);
-        initActionBar();
         initView();
         initListener();
     }
@@ -142,6 +141,7 @@ public class MainActivity extends BaseActivity
             itemName.add("截屏");
             itemName.add("局域网");
             itemName.add("爆炸");
+            itemName.add("图表");
             Bundle b = new Bundle();
             b.putStringArrayList("datas", itemName);
             frag.setArguments(b);
@@ -149,9 +149,4 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void initActionBar() {
-        actionBar.setActionBarBackgroundColor(getResources().getColor(R.color.BlueGrade4));
-        actionBar.setVisibility(View.VISIBLE);
-        actionBar.setTitleText("功能", Color.WHITE);
-    }
 }
