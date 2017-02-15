@@ -50,7 +50,8 @@ dependencies {
     compile 'org.xutils:xutils:3.3.34'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.facebook.fresco:fresco:0.13.0'
+    //compile 'com.facebook.fresco:fresco:0.13.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
@@ -58,6 +59,7 @@ dependencies {
     compile 'com.android.support:palette-v7:23.+'
     compile 'com.facebook.rebound:rebound:0.3.8'
     //compile 'com.github.barteksc:android-pdf-viewer:2.1.0'
+    compile 'jp.wasabeef:blurry:2.1.0'
     //    compile 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
     compile files('libs/libammsdk.jar')
     compile 'com.squareup.okhttp3:okhttp:3.4.2'

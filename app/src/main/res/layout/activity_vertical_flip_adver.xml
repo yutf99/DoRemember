@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_vertical_flip_adver"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.white.hot.doremember.function.anim.VerticalFlipAdverActivity">
+
+    <ViewFlipper
+        android:id="@+id/vf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoStart="true"
+        android:background="#fff"
+        android:flipInterval="3000"
+        android:inAnimation="@anim/anim_marquee_in"
+        android:outAnimation="@anim/anim_marquee_out"
+        android:paddingLeft="30dp" />
+
+    <TextView
+        android:id="@+id/v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="这是一个不眠之夜"/>
+    <com.white.hot.doremember.widget.BatteryIcon
+        android:id="@+id/bi"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/defult_20_dimen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

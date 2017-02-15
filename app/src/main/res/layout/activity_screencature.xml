@@ -46,7 +46,6 @@
         android:horizontalSpacing="@dimen/defult_4_dimen"
         android:verticalSpacing="@dimen/defult_4_dimen"
         android:scrollbars="none"
-        android:background="@color/DeepOrangeGradeA400"
         android:numColumns="3"/>
 
 </LinearLayout>

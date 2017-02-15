@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.white.hot.doremember.R;
@@ -27,9 +28,12 @@ public class BaseDialog extends Dialog
     private FrameLayout container;
     private TextView tvNegative;
     private TextView tvPositive;
+    private LinearLayout btnLayout;
+    private View divider;
     private TextView tip;
     //对话框比例，最大为10，最小为1；
     private int dialogSizeRation = 5;
+    private Context mContext;
 
     public TextView getTvPositive()
     {
@@ -39,6 +43,16 @@ public class BaseDialog extends Dialog
     public TextView getTvNegative()
     {
         return tvNegative;
+    }
+
+    public LinearLayout getBtnLayout()
+    {
+        return btnLayout;
+    }
+
+    public View getDivider()
+    {
+        return divider;
     }
 
     public TextView getTip()
@@ -54,6 +68,7 @@ public class BaseDialog extends Dialog
     public BaseDialog(Context context, int themeResId)
     {
         super(context, themeResId);
+        this.mContext = context;
         parent = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.base_dialog, null, false);
         init();
     }
@@ -68,6 +83,8 @@ public class BaseDialog extends Dialog
         container = (FrameLayout) parent.findViewById(R.id.container);
         tvNegative = (TextView) parent.findViewById(R.id.btn_negative);
         tvPositive = (TextView) parent.findViewById(R.id.btn_positive);
+        btnLayout = (LinearLayout) parent.findViewById(R.id.btn_layout);
+        divider = parent.findViewById(R.id.divider);
         tip = (TextView) parent.findViewById(R.id.message);
     }
 
@@ -109,13 +126,6 @@ public class BaseDialog extends Dialog
             p = new BaseParams(context);
         }
 
-        public Builder setNagetiveListen(String negativeText, View.OnClickListener listener)
-        {
-            p.negativeText = negativeText;
-            p.negativeListener = listener;
-            return this;
-        }
-
         public Builder setMessage(String message)
         {
             if(TextUtils.isEmpty(message))
@@ -128,22 +138,23 @@ public class BaseDialog extends Dialog
             return this;
         }
 
-        public Builder setPositiveListen(String positiveText, View.OnClickListener listener)
+        public Builder setPositiveListener(String positiveText, View.OnClickListener listener)
         {
             p.positiveText = positiveText;
             p.positiveListener = listener;
             return this;
         }
 
-        public Builder setView(int resId)
+        public Builder setNegativeListener(String negativeText, View.OnClickListener listener)
         {
-            p.customContentViewResId = resId;
+            p.negativeText = negativeText;
+            p.negativeListener = listener;
             return this;
         }
 
-        public Builder showOkOnly()
+        public Builder setView(int resId)
         {
-            p.showOkOnly = true;
+            p.customContentViewResId = resId;
             return this;
         }
 
@@ -173,6 +184,12 @@ public class BaseDialog extends Dialog
             return this;
         }
 
+        public Builder setCancelable(boolean cancelable)
+        {
+            p.cancelable = cancelable;
+            return this;
+        }
+
         public BaseDialog show()
         {
             if(!isCreated)
@@ -189,6 +206,8 @@ public class BaseDialog extends Dialog
             }
             return dialog;
         }
+
+
     }
 
     protected static class BaseParams
@@ -202,7 +221,6 @@ public class BaseDialog extends Dialog
         //默认会带一个textview显示message
         public String message;
         public Context context;
-        public boolean showOkOnly;
 
         public BaseParams(Context context)
         {
@@ -211,11 +229,10 @@ public class BaseDialog extends Dialog
 
         public void apply(final BaseDialog dialog)
         {
+            //取消
             if(!TextUtils.isEmpty(negativeText))
             {
                 dialog.getTvNegative().setText(negativeText);
-            }
-
                 dialog.getTvNegative().setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -228,37 +245,48 @@ public class BaseDialog extends Dialog
                         }
                     }
                 });
+            }
 
-
+            //确定
             if(!TextUtils.isEmpty(positiveText))
             {
                 dialog.getTvPositive().setText(positiveText);
+                dialog.getTvPositive().setOnClickListener(new View.OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View v)
+                    {
+                        dialog.dismiss();
+                        if(positiveListener != null)
+                        {
+                            positiveListener.onClick(v);
+                        }
+                    }
+                });
             }
 
-            dialog.getTvPositive().setOnClickListener(new View.OnClickListener()
-            {
 
-                @Override
-                public void onClick(View v)
-                {
-                    dialog.dismiss();
-                    if(positiveListener != null)
-                    {
-                        positiveListener.onClick(v);
-                    }
-                }
-            });
-
-            if(showOkOnly)
+            if(negativeListener != null && positiveListener == null)
             {
+                dialog.getDivider().setVisibility(View.GONE);
+                dialog.getTvPositive().setVisibility(View.GONE);
+                dialog.getTvNegative().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bs_dialog_onebtn_only));
+            }else if(negativeListener == null && positiveListener != null)
+            {
+                dialog.getDivider().setVisibility(View.GONE);
                 dialog.getTvNegative().setVisibility(View.GONE);
+                dialog.getTvPositive().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bs_dialog_onebtn_only));
+            }else if(negativeListener == null && positiveListener == null)
+            {
+                dialog.getBtnLayout().setVisibility(View.GONE);
             }
 
             if (cancelable) {
-                dialog.setCanceledOnTouchOutside(true);
+                dialog.setCancelable(true);
             }else
             {
-                dialog.setCanceledOnTouchOutside(false);
+                dialog.setCancelable(false);
             }
             if(message != null)
             {

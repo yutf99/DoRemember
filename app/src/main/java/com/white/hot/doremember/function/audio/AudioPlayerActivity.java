@@ -1,6 +1,7 @@
 package com.white.hot.doremember.function.audio;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,8 @@ import com.white.hot.doremember.base.BaseActivity;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import jp.wasabeef.blurry.Blurry;
 
 
 @ContentView(R.layout.activity_audio_player)
@@ -50,7 +53,11 @@ public class AudioPlayerActivity extends BaseActivity {
                 showProgress();
                 break;
             case R.id.btn2:
-
+                Blurry.with(this)
+                        .radius(80)
+                        .color(getResources().getColor(R.color.halfWhite))
+                        .animate(100)
+                        .onto(blurLayout);
                 break;
             case R.id.btn3:
                 break;

@@ -2,15 +2,11 @@ package com.white.hot.doremember.utils;
 
 import android.graphics.Color;
 
-import com.white.hot.doremember.base.BaseApplication;
-
 import java.util.Random;
 
 /**
  * Created by ytf on 2016/10/13.
- * Description:
- * Modify by xx on 2016/10/13.
- * Modify detail:
+ * Description: 随机产生Material Design颜色
  */
 public class ColorMachine {
 

@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -45,7 +44,7 @@ public class BaseApplication extends Application {
         //初始化全局异常处理
 //        CrashHandler.getInstance().init(this);
         //初始化frasco
-        Fresco.initialize(this);
+//        Fresco.initialize(this);
     }
 
     public void initImageLoader()

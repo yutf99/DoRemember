@@ -31,7 +31,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.google.zxing.ResultPoint;
-import com.zking.soft.zkingbaseframework.R;
 import com.zxing.android.camera.CameraManager;
 
 import java.util.ArrayList;

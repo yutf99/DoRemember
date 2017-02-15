@@ -14,9 +14,10 @@
     </FrameLayout>
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/defult_1_dimen"
+        android:layout_height="1px"
         android:background="@color/halfTransparent"/>
     <LinearLayout
+        android:id="@+id/btn_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -35,6 +36,7 @@
             android:layout_height="match_parent"/>
 
         <View
+            android:id="@+id/divider"
             android:layout_width="0dp"
             android:layout_weight="0.004"
             android:layout_height="@dimen/defult_40_dp"

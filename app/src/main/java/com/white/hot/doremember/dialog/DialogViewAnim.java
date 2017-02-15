@@ -13,7 +13,7 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ProgressBar;
 
-import com.facebook.drawee.view.SimpleDraweeView;
+//import com.facebook.drawee.view.SimpleDraweeView;
 import com.white.hot.doremember.R;
 
 import org.xutils.view.annotation.ViewInject;
@@ -28,9 +28,9 @@ import org.xutils.x;
 public class DialogViewAnim extends Dialog {
 
     private ProgressBar pbCircle;
-
-    private SimpleDraweeView sdv1;
-    private SimpleDraweeView sdv2;
+//
+//    private SimpleDraweeView sdv1;
+//    private SimpleDraweeView sdv2;
 
     public DialogViewAnim(Context context) {
         this(context, R.style.customDialog);
@@ -83,8 +83,8 @@ public class DialogViewAnim extends Dialog {
         window.setWindowAnimations(R.style.DialogViewAnim);//设置窗口弹出动画
 //        window.setBackgroundDrawableResource(R.color.transparent); //设置对话框背景为透明
 
-        sdv1 = (SimpleDraweeView) findViewById(R.id.sdv1);
-        sdv2 = (SimpleDraweeView) findViewById(R.id.sdv2);
+//        sdv1 = (SimpleDraweeView) findViewById(R.id.sdv1);
+//        sdv2 = (SimpleDraweeView) findViewById(R.id.sdv2);
         pbCircle = (ProgressBar) findViewById(R.id.pb_circle);
 
 
@@ -93,8 +93,8 @@ public class DialogViewAnim extends Dialog {
 //        pbCircle.setAnimation(anim);
 //        anim.start();
 
-        sdv1.setImageURI(Uri.parse("http://img4.duitang.com/uploads/item/201510/11/20151011190254_4vwNK.jpeg"));
-        sdv2.setImageURI(Uri.parse("http://img4.duitang.com/uploads/item/201510/11/20151011190254_4vwNK.jpeg"));
+//        sdv1.setImageURI(Uri.parse("http://img4.duitang.com/uploads/item/201510/11/20151011190254_4vwNK.jpeg"));
+//        sdv2.setImageURI(Uri.parse("http://img4.duitang.com/uploads/item/201510/11/20151011190254_4vwNK.jpeg"));
 
 //        sdv1.setAnimation(tanimL);
 //        sdv2.setAnimation(tanimR);

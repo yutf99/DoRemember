@@ -66,7 +66,7 @@ public class OkHttpManager
     private Handler mHandler;
     private Gson mGson;
     //默认超时时间8秒
-    private static int timeout = 8;
+    private static int timeout = 20;
     private OkHttpClient clientDefault;
     private static Request simpleGetReq;
     private static Request simplePostReq;
@@ -181,6 +181,18 @@ public class OkHttpManager
         deliveryRequest(simplePostReq, callback);
     }
 
+    /***
+     * <b>发送一个post请求</b>, 回调要传入类型
+     *
+     * @param url            链接
+     * @param callback       回调函数
+     * @param reqBodyParam  请求体参数
+     */
+    public void doPost(String url, final ResultCallback<? extends Object> callback, Map<String, String> reqBodyParam)
+    {
+        doPost(url, callback, reqBodyParam, null);
+    }
+
 //    public void doPost(String url, final ResultCallback<? extends Object> callback, Object obj)
 //    {
 //        Map<String, String> param = new HashMap<>();
@@ -235,6 +247,17 @@ public class OkHttpManager
                 try
                 {
                     final String string = response.body().string();
+                    if(string.startsWith("<html>") || string.startsWith("<HTML>"))
+                    {
+                        int errStartIndex = string.indexOf("<body>")+6;
+                        int errEndIndex = string.indexOf("</body>");
+                        String errStr = string.substring(errStartIndex, errEndIndex);
+                        errStartIndex = errStr.indexOf("<h1>")+4;
+                        errEndIndex = errStr.indexOf("</h1>");
+                        errStr = errStr.substring(errStartIndex, errEndIndex);
+                        failedResponse(new IllegalArgumentException(errStr), callback);
+                        return;
+                    }
                     if (callback.mType == String.class)
                     {
                         successResponse(string, callback);
@@ -604,6 +627,9 @@ public class OkHttpManager
                     } else if (e instanceof FileNotFoundException)
                     {
                         callback.onError(NET_FAILED_FILE_MSG, e);
+                    } else if (e instanceof IllegalArgumentException)
+                    {
+                        callback.onError("参数异常-"+e.getMessage(), e);
                     } else
                     {
                         callback.onError(NET_FAILED_MSG, e);

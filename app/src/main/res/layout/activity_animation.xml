@@ -119,6 +119,15 @@
             android:layout_marginTop="@dimen/defult_30_dimen"
             android:textColor="@color/white"
             android:background="@drawable/button_water_blue_style"/>
+        <Button
+            android:id="@+id/btn_noti_s7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FlipAdver"
+            android:textSize="@dimen/defult_30_dimen"
+            android:layout_marginTop="@dimen/defult_30_dimen"
+            android:textColor="@color/white"
+            android:background="@drawable/button_water_blue_style"/>
         <com.white.hot.doremember.widget.ToggleButton
             android:layout_width="54dp"
             android:layout_height="30dp"

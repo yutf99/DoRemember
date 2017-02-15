@@ -84,12 +84,9 @@ public class AppManager
         if(listActivities != null && listActivities.size() > 0)
         {
             int size = listActivities.size();
-            if(size > 1)
+            if(size > 0)
             {
                 return listActivities.get(size - 1);
-            }else
-            {
-                return listActivities.get(0);
             }
         }
         return null;

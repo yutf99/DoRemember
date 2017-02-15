@@ -49,6 +49,8 @@ public class AnimationActivity extends BaseActivity {
     Button btnNotiS4;
     @ViewInject(R.id.btn_noti_s5)
     Button btnNotiS5;
+    @ViewInject(R.id.btn_noti_s7)
+    Button btnNotiS7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,8 @@ public class AnimationActivity extends BaseActivity {
 
     @Event(value = {R.id.broswer, R.id.iv,
             R.id.btn_anim_property, R.id.btn_anim_tween, R.id.btn_anim_frame,
-            R.id.btn_anim_fan,R.id.btn_noti_s3, R.id.btn_noti_s4,R.id.btn_noti_s5,R.id.btn_noti_s6})
+            R.id.btn_anim_fan,R.id.btn_noti_s3, R.id.btn_noti_s4,
+            R.id.btn_noti_s5,R.id.btn_noti_s6,R.id.btn_noti_s7})
     private void click(View v) {
         switch (v.getId()) {
             case R.id.broswer:
@@ -98,6 +101,9 @@ public class AnimationActivity extends BaseActivity {
                 break;
             case R.id.btn_noti_s6:
                 startActivity(new Intent(this, ReboundActivity.class));
+                break;
+            case R.id.btn_noti_s7:
+                startActivity(new Intent(this, VerticalFlipAdverActivity.class));
                 break;
         }
     }

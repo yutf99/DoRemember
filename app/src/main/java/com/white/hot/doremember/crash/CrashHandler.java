@@ -1,10 +1,13 @@
 package com.white.hot.doremember.crash;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Looper;
 import android.os.Process;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.white.hot.doremember.bean.BaseResp;
@@ -79,33 +82,33 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
     private void handlerException(Throwable ex)
     {
         saveCrashInfo2File(ex);
-        new Thread()
+        Log.e("s", "已经准备开始1");
+        Activity activity = AppManager.getInstance().popTop();
+        if(activity != null)
         {
-            @Override
-            public void run()
-            {
-                Looper.prepare();
-                Context c = AppManager.getInstance().popTop();
-                if(c != null)
-                {
-                    new BaseDialog.Builder(c)
-                            .setMessage("抱歉！程序出现异常了，即将退出！")
-                            .showOkOnly()
-                            .setPositiveListen("确定", new View.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    // 退出程序
-                                    Process.killProcess(Process.myPid());
-                                    // 关闭虚拟机，彻底释放内存空间
-                                    System.exit(0);
-                                }
-                            }).show();
-                }
-                Looper.loop();
-            }
-        }.start();
+            Looper.prepare();
+            Log.e("s", "已经准备开始2");
+//            Toast.makeText(activity, "退出", Toast.LENGTH_SHORT).show();
+            Looper.loop();
+            Process.killProcess(Process.myPid());
+            System.exit(0);
+//            BaseDialog bd = new BaseDialog.Builder(activity)
+//                    .setMessage("抱歉！程序出现异常了，即将退出！")
+//                    .setPositiveListener("确定", new View.OnClickListener()
+//                    {
+//                        @Override
+//                        public void onClick(View v)
+//                        {
+//                            // 退出程序
+//                            Process.killProcess(Process.myPid());
+//                            // 关闭虚拟机，彻底释放内存空间
+//                            System.exit(0);
+//                        }
+//                    }).create();
+//            bd.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+//            bd.show();
+//            Looper.loop();
+        }
     }
 
     //用来存储设备信息和异常信息
@@ -118,6 +121,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
      */
     public void collectDeviceInfo(Context ctx)
     {
+        infos.clear();
         Field[] fields = Build.class.getDeclaredFields();
         for (Field field : fields)
         {

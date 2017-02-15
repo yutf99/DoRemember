@@ -88,6 +88,7 @@ public class MainFragment extends BaseFragment
                         break;
                     case 8:
                         startActivity(new Intent(mContext, ExplosionActivity.class));
+                        break;
                     case 9:
                         startActivity(new Intent(mContext, ChartActivity.class));
                         break;
